@@ -31,9 +31,7 @@ fun LaunchScreen(
         modifier = Modifier
             .padding(all = 20.dp)
             .fillMaxSize()
-            .fillMaxHeight()
-
-
+            .fillMaxHeight(),
     ) {
         
         Text(
@@ -47,10 +45,9 @@ fun LaunchScreen(
         BusinessLogo()
         Spacer(modifier = Modifier.height(30.dp))
         Button(
-            onClick = { navController.navigate(route = Routes.AUTHENTICATION_SCREEN) },
+            onClick = { navController.navigate(route = Routes.CONTENT_SCREEN) },
             modifier = Modifier
-                .width(200.dp)
-            ,
+                .width(200.dp),
             shape = CircleShape
                 
         ) {

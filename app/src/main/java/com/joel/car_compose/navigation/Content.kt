@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -18,6 +19,7 @@ fun ContentScreen(){
     Scaffold(
         bottomBar = {
             BottomBar(navController = navController)
+
         }
     ) {
         BottomBarNavGraph(navController = navController)
@@ -33,7 +35,9 @@ fun BottomBar(
         BottomNavRoutes.Profile
     )
 
-    BottomAppBar {
+    BottomAppBar(
+        elevation = 10.dp
+    ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
@@ -59,11 +63,9 @@ fun RowScope.AddItems(
                    imageVector = screen.icon,
                    contentDescription = screen.title )
         },
-        label = {
-                Text(text = screen.title)
-        },
-        selectedContentColor = Color.White,
-        unselectedContentColor = Color.White.copy(0.4f),
+
+        selectedContentColor = Color.Black,
+        unselectedContentColor = Color.Black.copy(0.4f),
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
         } == true,

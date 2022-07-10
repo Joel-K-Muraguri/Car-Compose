@@ -9,18 +9,19 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Blue,
-    primaryVariant = Blue,
-    secondary = Orange
+    primary = White,
+    primaryVariant = White,
+    secondary = Blue
 )
 
 private val LightColorPalette = lightColors(
-    primary = Blue,
-    primaryVariant = Blue,
-    secondary = Orange,
-//    onPrimary = Color.Black,
+    primary = White,
+    primaryVariant = White,
+    secondary = Blue,
+    onPrimary = Color.Black,
     onSecondary = Color.Black,
-    onSurface = Color.Black,
+    onBackground = Color.Black
+  //  onSurface = Color.Black,
 
 
 
@@ -28,7 +29,10 @@ private val LightColorPalette = lightColors(
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
     onBackground = Color.Black,
+    onSurface = Color.Black,
     */
 )
 
@@ -36,7 +40,7 @@ private val LightColorPalette = lightColors(
 fun CarComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
-        color = Blue
+        color = Color.White
     )
     val colors = if (darkTheme) {
         DarkColorPalette

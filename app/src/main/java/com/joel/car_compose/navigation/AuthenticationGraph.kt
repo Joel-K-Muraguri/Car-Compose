@@ -22,6 +22,7 @@ fun NavGraphBuilder.authenticationGraph(
         composable(route = Routes.LAUNCH_SCREEN){
             LaunchScreen(navController = navController )
         }
+        /*
         composable(route = Routes.AUTHENTICATION_SCREEN){
             AuthenticationScreen(navController = navController)
         }
@@ -30,6 +31,6 @@ fun NavGraphBuilder.authenticationGraph(
         }
         composable(route = Routes.SIGN_IN_SCREEN){
             SignInScreen(navController)
-        }
+        }*/
     }
 }

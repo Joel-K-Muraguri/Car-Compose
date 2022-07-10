@@ -7,5 +7,17 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val Orange = Color(0xFFFF5722)
-val Blue = Color(0xFF3F51B5)
+val Blueish = Color(0xFF3F51B5)
+
+
+//Car App
+val Black = Color(0xFF000000)
+val Blue = Color(0xFF4E04F3)
 val White = Color(0xFFFFFFFF)
+
+
+// val White = Color(0xFF887676)
+//White,Gray,Silver,Black suitable for car app
+
+
+
