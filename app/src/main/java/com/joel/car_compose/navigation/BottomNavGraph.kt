@@ -16,7 +16,7 @@ fun BottomBarNavGraph(
         navController = navController, startDestination = BottomNavRoutes.Home.route )
     {
         composable(route = BottomNavRoutes.Home.route){
-            ListScreen()
+            ListScreen(navController)
         }
         composable(route = BottomNavRoutes.Profile.route){
             ProfileScreen()

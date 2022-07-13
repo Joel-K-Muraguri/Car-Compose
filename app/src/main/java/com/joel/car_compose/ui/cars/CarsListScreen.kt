@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
@@ -18,16 +18,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.joel.car_compose.model.DataStore
 
 @Composable
-fun ListScreen(){
+fun ListScreen(navController: NavHostController){
     Surface {
-        ListScreenTools()
+        ListScreenTools(navController)
     }
 }
 
 @Composable
-fun ListScreenTools(){
+fun ListScreenTools(navController: NavHostController){
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,6 +39,7 @@ fun ListScreenTools(){
 
     ) {
         SearchAppBar()
+        CarList(navController )
     }
 }
 
@@ -69,7 +73,22 @@ fun SearchAppBar(){
 }
 
 @Composable
-fun CarList(){
+fun CarList(
+    navController: NavHostController
+){
+
+    val cars = remember {
+        DataStore.carList
+    }
+
+    LazyColumn{
+        items(
+            items = cars,
+            itemContent = {
+                CarCardItem(car = it)
+            }
+        )
+    }
 
 }
 
@@ -77,5 +96,6 @@ fun CarList(){
 @Preview(showBackground = true)
 @Composable
 fun ListScreenPreview(){
-    ListScreen()
+    val navController = rememberNavController()
+    ListScreen(navController)
 }

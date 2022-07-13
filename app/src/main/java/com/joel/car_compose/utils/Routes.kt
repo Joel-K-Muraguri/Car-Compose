@@ -7,6 +7,7 @@ object Routes {
     const val SIGN_IN_SCREEN = "sign_in_screen"
     const val AUTHENTICATION_SCREEN = "authentication_screen"
     const val CONTENT_SCREEN = "content_screen"
+    const val DETAILED_SCREEN = "detailed_screen"
 
     const val AUTHENTICATION_ROUTE = "authentication_route"
     const val BOTTOM_NAVIGATION_ROUTE = "bottom_nav_route"

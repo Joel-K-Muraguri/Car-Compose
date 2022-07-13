@@ -1,84 +1,132 @@
 package com.joel.car_compose.ui.authentication.launch
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.joel.car_compose.R
+import com.joel.car_compose.ui.theme.BlueButton
+import com.joel.car_compose.ui.theme.White
+import com.joel.car_compose.ui.theme.Yellowish
 import com.joel.car_compose.utils.Routes
 
 @Composable
 fun LaunchScreen(
     navController: NavHostController
 ){
-    Column(
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Image(
+        painter = painterResource(id = R.drawable.img_ferrari),
+        contentDescription = "background",
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
+    Box(
         modifier = Modifier
-            .padding(all = 20.dp)
             .fillMaxSize()
-            .fillMaxHeight(),
     ) {
-        
-        Text(
-            text = "AUTO CARS",
-            fontSize = 30.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color.Blue,
-            fontFamily = FontFamily.Cursive
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        BusinessLogo()
-        Spacer(modifier = Modifier.height(30.dp))
-        Button(
-            onClick = { navController.navigate(route = Routes.CONTENT_SCREEN) },
-            modifier = Modifier
-                .width(200.dp),
-            shape = CircleShape
-                
-        ) {
-            Text(
-                text = "Get Started",
-                modifier = Modifier.height(20.dp)
-            )
-        }
-        
+        PageContentSection(navController)
     }
 }
-
 
 @Composable
-fun BusinessLogo(){
-    Card(
+fun PageContentSection(
+    navController: NavHostController
+){
+    Box(
         modifier = Modifier
-            .height(200.dp)
-            .width(200.dp),
-        elevation = 5.dp,
-        backgroundColor = Color.Black
+            .fillMaxSize()
+            .padding(32.dp)
+            .offset(y = 170.dp),
+        contentAlignment = Alignment.TopStart
     ) {
-       Image(
-           painter = painterResource(id = R.drawable.img),
-           contentDescription = "businnes logo" )
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+              Box(
+                  contentAlignment = Alignment.CenterStart
+              ) {
+                  Text(
+                      text = "Get Started with Auto Cars",
+                      style = MaterialTheme.typography.h4,
+                      fontWeight = FontWeight.Bold,
+                      color = Yellowish
+                  )
+              }
+            
+            Spacer(modifier = Modifier.height(300.dp))
+
+           
+           Box(
+               contentAlignment = Alignment.BottomStart
+           ) {
+               Row (
+                   verticalAlignment = Alignment.CenterVertically,
+                   horizontalArrangement = Arrangement.End
+               ) {
+                   Text(
+                       text = "Skip",
+                       style = MaterialTheme.typography.body1,
+                       color = Color.White,
+                       fontWeight = FontWeight.Bold
+
+                   )
+                   Spacer(modifier = Modifier.padding(50.dp))
+
+                   Button(
+                       onClick = { navController.navigate(Routes.CONTENT_SCREEN) },
+                       colors = ButtonDefaults.buttonColors(
+                           contentColor = Color.White,
+                           backgroundColor = BlueButton
+                       ),
+                       modifier = Modifier
+                           .clip(RoundedCornerShape(30.dp))
+                           .height(60.dp)
+
+                   ) {
+                       Icon(
+                           imageVector = Icons.Default.ArrowForward,
+                           contentDescription = "",
+                           modifier = Modifier
+                               .background(Color.White.copy(0.1f))
+                               .clip(RoundedCornerShape(50.dp))
+                               .padding(5.dp)
+                               .size(35.dp)
+                       )
+                       Spacer(modifier = Modifier.padding(5.dp))
+
+                       Text(
+                           text = "Get Started",
+                           color = White
+                       )
+                   }
+               }
+           }
+        }
     }
 }
+
+
+
 
 @Preview(showBackground = true)
 @Composable
 fun LaunchScreenPreview(){
     val navController = rememberNavController()
-    LaunchScreen(navController = navController)
+    LaunchScreen(navController)
 }

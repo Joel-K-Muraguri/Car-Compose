@@ -14,6 +14,12 @@ val Blueish = Color(0xFF3F51B5)
 val Black = Color(0xFF000000)
 val Blue = Color(0xFF4E04F3)
 val White = Color(0xFFFFFFFF)
+val Yellowish = Color(0xFFFFC107)
+val BlueButton = Color(0xFF281C42)
+
+
+
+
 
 
 // val White = Color(0xFF887676)
