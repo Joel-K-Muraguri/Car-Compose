@@ -1,21 +1,16 @@
 package com.joel.car_compose.ui.profile
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.joel.car_compose.R
-import com.joel.car_compose.ui.profile.imageupload.ImageUpload
 
 // Should have 4 buttons ,i.e,
 // image upload,
@@ -75,16 +70,30 @@ fun ProfileScreenButtons(){
 
 @Composable
 fun ImageUploadButton(){
+
     Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .height(100.dp)
-            .width(100.dp)
-            .fillMaxSize(3f)
-            .clickable {  }
-            .background(color = Color.Cyan),
+            .padding(8.dp)
 
     ) {
-        ImageUpload()
+       Image(
+           painter = painterResource(id = R.drawable.ic_baseline_person_24),
+           contentDescription = "person",
+           
+
+       )
+        Text(text = "Joel Muraguri")
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                backgroundColor = Color.Yellow
+            )
+        ) {
+            Text(text = "Edit Profile")
+        }
     }
 
 
@@ -94,6 +103,7 @@ fun ImageUploadButton(){
 fun UserDetailsButton(){
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable {  },
         verticalAlignment = Alignment.CenterVertically,
 
@@ -115,6 +125,7 @@ fun UserDetailsButton(){
 fun MyWishListButton(){
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable {  },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
@@ -137,6 +148,7 @@ fun MyWishListButton(){
 fun MyBids(){
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable {  },
         verticalAlignment = Alignment.CenterVertically,
 
@@ -159,6 +171,7 @@ fun MyBids(){
 fun HelpCenter(){
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable {
 
             },
@@ -182,6 +195,7 @@ fun HelpCenter(){
 fun TermsAndPolicy(){
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable {  },
         verticalAlignment = Alignment.CenterVertically,
 
@@ -204,6 +218,7 @@ fun TermsAndPolicy(){
 fun LogOutButton(){
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable {  },
         verticalAlignment = Alignment.CenterVertically,
 
@@ -218,10 +233,10 @@ fun LogOutButton(){
 
     }
 }
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview(){
     ProfileScreen()
 }
-
+*/

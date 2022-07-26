@@ -2,6 +2,9 @@ package com.joel.car_compose.ui.authentication.signin
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -11,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,10 +30,13 @@ fun SignInScreen(
     var userName by remember {
         mutableStateOf("")
     }
-    var name by remember {
+    var phoneNumber by remember {
         mutableStateOf("")
     }
     var email by remember {
+        mutableStateOf("")
+    }
+    var location by remember {
         mutableStateOf("")
     }
     var password by remember {
@@ -57,16 +64,19 @@ fun SignInScreen(
            label = {
                Text(text = "UserName")
            },
-           shape = CircleShape
+           shape = RoundedCornerShape(10.dp),
        )
        Spacer(modifier = Modifier.height(5.dp))
        OutlinedTextField(
-           value = name,
-           onValueChange = {name= it},
+           value = phoneNumber,
+           onValueChange = {phoneNumber = it},
            label = {
-               Text(text = "Name")
+               Text(text = "Phone Number")
            },
-           shape = CircleShape
+           shape = RoundedCornerShape(10.dp),
+           keyboardOptions = KeyboardOptions(
+               keyboardType = KeyboardType.Number
+           )
        )
        Spacer(modifier = Modifier.height(5.dp))
        OutlinedTextField(
@@ -75,25 +85,28 @@ fun SignInScreen(
            label = {
                Text(text = " Email")
            },
-           shape = CircleShape
+           shape = RoundedCornerShape(10.dp),
+           keyboardOptions = KeyboardOptions(
+               keyboardType = KeyboardType.Email
+           )
+       )
+       Spacer(modifier = Modifier.height(5.dp))
+       OutlinedTextField(
+           value = location,
+           onValueChange = {location = it},
+           label = {
+               Text(text = "Location")
+           },
+           shape = RoundedCornerShape(10.dp),
        )
        Spacer(modifier = Modifier.height(5.dp))
        OutlinedTextField(
            value = password,
            onValueChange = {password = it},
            label = {
-               Text(text = "Enter Password")
+               Text(text = "Password" )
            },
-           shape = CircleShape
-       )
-       Spacer(modifier = Modifier.height(5.dp))
-       OutlinedTextField(
-           value = password,
-           onValueChange = {password = it},
-           label = {
-               Text(text = "Confirm Password")
-           },
-           shape = CircleShape
+           shape = RoundedCornerShape(10.dp),
        )
        Spacer(modifier = Modifier.height(5.dp))
        Button(onClick = { navController.navigate(route = Routes.CONTENT_SCREEN) }) {

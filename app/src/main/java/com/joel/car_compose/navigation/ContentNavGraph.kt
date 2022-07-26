@@ -1,26 +1,38 @@
 package com.joel.car_compose.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import android.content.Context
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.joel.car_compose.ui.cars.CarDetailedScreen
+import com.joel.car_compose.ui.cars.CarSharedViewModel
 import com.joel.car_compose.utils.Routes
 
 
 fun NavGraphBuilder.contentNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    carSharedViewModel: CarSharedViewModel,
+    context: Context
 ){
     navigation(
         route = Routes.CONTENT_ROUTE,
         startDestination = Routes.CONTENT_SCREEN ,
     ){
         composable(route = Routes.CONTENT_SCREEN){
-            ContentScreen()
+            ContentScreen(carSharedViewModel, context)
         }
-        composable(route = Routes.DETAILED_SCREEN){
-            CarDetailedScreen(navController)
-        }
+
+//        composable(
+//            route = Routes.DETAILED_SCREEN + "?carId ={carId}",
+//            arguments = listOf(
+//                navArgument(name = "carId"){
+//                    type = NavType.IntType
+//                    nullable = true
+//
+//                }
+//            )
+//        ){
+//           CarDetailedScreen(navController)
+//        }
     }
 
 }

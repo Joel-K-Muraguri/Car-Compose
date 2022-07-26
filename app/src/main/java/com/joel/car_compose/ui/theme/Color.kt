@@ -16,6 +16,9 @@ val Blue = Color(0xFF4E04F3)
 val White = Color(0xFFFFFFFF)
 val Yellowish = Color(0xFFFFC107)
 val BlueButton = Color(0xFF281C42)
+val CardBackground = Color(0xFF545D91)
+val favButton = Color(0xffE91E63)
+
 
 
 

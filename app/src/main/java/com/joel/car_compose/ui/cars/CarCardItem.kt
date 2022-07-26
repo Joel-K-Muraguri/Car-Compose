@@ -1,88 +1,81 @@
 package com.joel.car_compose.ui.cars
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import com.joel.car_compose.R
+import com.joel.car_compose.components.Favourite
 import com.joel.car_compose.model.Car
-import com.joel.car_compose.utils.Routes
 
 @Composable
-fun CarCardItem(car: Car){
-    val navController = rememberNavController()
+fun CarCardItem(
+    car: Car,
+    modifier: Modifier = Modifier
+
+) {
+
     Card(
         elevation = 5.dp,
         modifier = Modifier
-            .padding(16.dp)
             .clickable {
-                Log.d("TEST::", "CarCardItem: clicked")
-                navController.navigate(Routes.DETAILED_SCREEN)
+
             },
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = White
+
     ) {
         Column() {
-            Row(
-            ) {
-                Column() {
-                    Text(
-                        text = car.model,
-                        modifier = Modifier
-                            .weight(4f)
-                    )
-                    Text(text = car.brand)
-                }
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "",
+            Row {
+               Text(
+                   text = car.name,
+                   style = MaterialTheme.typography.body1,
+                   modifier = Modifier
+                       .weight(5f)
+
+               )
+               Favourite()
+            }
+           Card(
+               modifier = Modifier
+                   .fillMaxWidth(),
+               backgroundColor = White
+
+           ) {
+               Image(
+                   painter = rememberAsyncImagePainter(model = car.image),
+                   contentDescription = car.name,
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .height(250.dp)
+                       .width(400.dp)
+               )
+           }
+            Row() {
+
+                Text(
+                    text = car.fuel,
+                    modifier = Modifier
+                        .weight(3f)
+                )
+                Text(
+                    text = car.horsepower,
                     modifier = Modifier
                         .weight(1f)
                 )
             }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Image(
-                    painter = painterResource(id = car.imageURL),
-                    contentDescription = ""
-                )
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Text(
-                    text = car.brand,
-                    modifier = Modifier
-                        .weight(2f)
-                )
-                Text(
-                    text = car.model,
-                    modifier = Modifier
-                        .weight(2f)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = car.fuelType,
-                    modifier = Modifier
-                        .weight(1f)
-                )
-            }
-
         }
     }
-
 }
+

@@ -89,7 +89,7 @@ fun PageContentSection(
                    Spacer(modifier = Modifier.padding(50.dp))
 
                    Button(
-                       onClick = { navController.navigate(Routes.CONTENT_SCREEN) },
+                       onClick = { navController.navigate(Routes.AUTHENTICATION_SCREEN) },
                        colors = ButtonDefaults.buttonColors(
                            contentColor = Color.White,
                            backgroundColor = BlueButton

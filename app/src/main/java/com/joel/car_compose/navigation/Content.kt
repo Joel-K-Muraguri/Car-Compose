@@ -1,5 +1,6 @@
 package com.joel.car_compose.navigation
 
+import android.content.Context
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -12,9 +13,13 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.joel.car_compose.ui.cars.CarSharedViewModel
 
 @Composable
-fun ContentScreen(){
+fun ContentScreen(
+    carSharedViewModel: CarSharedViewModel,
+    context: Context
+){
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -22,7 +27,7 @@ fun ContentScreen(){
 
         }
     ) {
-        BottomBarNavGraph(navController = navController)
+        BottomBarNavGraph(navController = navController, carSharedViewModel, context )
     }
 }
 
@@ -84,9 +89,9 @@ fun RowScope.AddItems(
     )
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun ContentPreview(){
     ContentScreen()
-}
+}*/
 

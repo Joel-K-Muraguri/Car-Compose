@@ -22,15 +22,13 @@ fun ImageUpload(){
 
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_baseline_add_a_photo_24),
+                painter = painterResource(id = R.drawable.ic_baseline_person_24),
                 contentDescription = "Profile Photo",
                 alignment = Alignment.CenterStart,
 
             )
         }
     }
-
-
 }
 
 @Preview(showBackground = true)
