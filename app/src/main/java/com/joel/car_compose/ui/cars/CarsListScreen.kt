@@ -1,50 +1,49 @@
 package com.joel.car_compose.ui.cars
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.joel.car_compose.auth.SessionManager
-import com.joel.car_compose.model.Car
 import com.joel.car_compose.model.Brand
+import com.joel.car_compose.model.Car
+import com.joel.car_compose.utils.Routes
 
 @Composable
 fun ListScreen(
     navController: NavHostController,
     carSharedViewModel: CarSharedViewModel,
-    context: Context
+    context: Context,
 ){
+
     Surface {
         ListScreenTools(
             navController,
-            carSharedViewModel
+            carSharedViewModel,
         )
     }
-
-    val token = SessionManager(context).fetchAuthToken()
-    Toast.makeText(context, token, Toast.LENGTH_SHORT).show()
+//    val token = SessionManager(context).fetchAuthToken()
 }
 
 @Composable
 fun ListScreenTools(
     navController: NavHostController,
-    carSharedViewModel: CarSharedViewModel
+    carSharedViewModel: CarSharedViewModel,
+
 ){
 
     Surface(
@@ -76,7 +75,7 @@ fun ListScreenTools(
             Spacer(modifier = Modifier.height(10.dp))
             CarList(
                 carList = carSharedViewModel.carListResponse,
-                carSharedViewModel
+                navController
             )
             carSharedViewModel.getCarData()
 
@@ -131,20 +130,19 @@ fun SearchAppBar(
 @Composable
 fun CarList(
     carList : List<Car>,
-    carSharedViewModel: CarSharedViewModel
+    navController: NavHostController
 ){
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(32.dp),
 
     ){
        itemsIndexed(
-           items = carList){ _, auto->
+           items = carList){ _, car->
            CarCardItem(
-               car = auto,
-               modifier = Modifier
-                   .clickable {
-                    //  carSharedViewModel.onEvents(ListScreenEvents.OnCarCardClick(auto))
-                   }
+               car = car,
+               onItemClicked = { car ->
+                   gotoCarDetails(car,navController)
+               }
            )
        }
     }
@@ -173,6 +171,11 @@ fun BrandList(
             )
         }
     }
+}
+
+fun gotoCarDetails(car: Car, navController: NavController) {
+    navController.currentBackStackEntry?.arguments?.putParcelable("car", car)
+    navController.navigate(Routes.DETAILED_SCREEN)
 }
 
 

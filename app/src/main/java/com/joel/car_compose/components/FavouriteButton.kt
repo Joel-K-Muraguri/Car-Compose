@@ -22,7 +22,7 @@ fun Favourite(){
         modifier =  Modifier.
                 size(40.dp),
         shape = CircleShape,
-        color = Color(0x77000000)
+        color = Color(0xDFF5FAFA)
 
     ) {
         FavouriteButton(modifier = Modifier.padding(8.dp))
@@ -34,7 +34,7 @@ fun Favourite(){
 fun FavouriteButton(
     modifier: Modifier = Modifier,
    // color: Colors = Color(0xffE91E63),
-    color: Color = Color(0xffE91E63)
+    color: Color = Color(0xFF0C0A0B)
 
 ){
     val isFavourite by remember {
@@ -60,8 +60,13 @@ fun FavouriteButton(
 
 }
 
+@Composable
+fun FavouriteColor(){
+    Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
+}
+
 @Preview
 @Composable
 fun FavouriteButtonPreview(){
-    FavouriteButton()
+    Favourite()
 }

@@ -14,8 +14,7 @@ import retrofit2.http.*
 interface ApiService {
 
     @POST(ApiConstants.REGISTER_ENDPOINT)
-    @FormUrlEncoded
-    suspend fun register (@Body request: RegisterRequest) : TokenResponse
+    fun register (@Body request: RegisterRequest) : Call<TokenResponse>
 
     @POST(ApiConstants.LOG_IN_ENDPOINT)
     fun login(@Body request: LoginRequest) : Call<TokenResponse>
@@ -26,7 +25,7 @@ interface ApiService {
     @GET(ApiConstants.CAR_BRAND_ENDPOINT)
     suspend fun getBrandList() : List<Brand>
 
-    @GET()
+    @GET(ApiConstants.FAVOURITES_ENDPOINT)
     suspend fun getFavourites(
         @Header ("Authorization") token : String
     )
@@ -42,8 +41,6 @@ interface ApiService {
             }
             return apiService!!
         }
-
     }
-
 
 }

@@ -1,13 +1,10 @@
 package com.joel.car_compose.navigation
 
 import android.content.Context
-import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.joel.car_compose.auth.AuthViewModel
-import com.joel.car_compose.auth.LoginRequest
 import com.joel.car_compose.ui.authentication.auth.AuthenticationScreen
 import com.joel.car_compose.ui.authentication.launch.LaunchScreen
 import com.joel.car_compose.ui.authentication.login.LogInScreen
@@ -17,7 +14,7 @@ import com.joel.car_compose.utils.Routes
 
 fun NavGraphBuilder.authenticationGraph(
     navController: NavHostController,
-    authViewModel: AuthViewModel,
+
     context: Context
 ){
     navigation(
@@ -32,10 +29,12 @@ fun NavGraphBuilder.authenticationGraph(
             AuthenticationScreen(navController = navController)
         }
         composable(route = Routes.LOG_IN_SCREEN){
-            LogInScreen(navController,authViewModel, context)
+            LogInScreen(navController, context)
         }
         composable(route = Routes.SIGN_IN_SCREEN){
-            SignInScreen(navController)
+            SignInScreen(navController,context)
         }
+
+
     }
 }

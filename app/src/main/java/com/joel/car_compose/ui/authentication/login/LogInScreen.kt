@@ -3,25 +3,30 @@ package com.joel.car_compose.ui.authentication.login
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.joel.car_compose.auth.AuthViewModel
+import com.joel.car_compose.R
 import com.joel.car_compose.auth.LoginRequest
 import com.joel.car_compose.auth.SessionManager
 import com.joel.car_compose.auth.TokenResponse
@@ -34,7 +39,6 @@ import retrofit2.Response
 @Composable
 fun LogInScreen(
     navController: NavHostController,
-    authViewModel: AuthViewModel,
     context: Context
 ){
     var userName by remember {
@@ -43,57 +47,146 @@ fun LogInScreen(
     var password by remember {
         mutableStateOf("")
     }
-    var text by remember { mutableStateOf("Log In") }
 
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxSize()
+    var isPasswordVisible by remember {
+        mutableStateOf(false)
+    }
+
+    val isFormValid by derivedStateOf {
+        userName.isNotBlank() && password.length >= 8
+    }
+
+    Scaffold(
+        backgroundColor = Color.Blue
     ) {
-        Text(
-            text = "AUTO CARS",
-            fontSize = 30.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color.Blue,
-            fontFamily = FontFamily.Cursive
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
-            value = userName,
-            onValueChange = {userName = it},
-            label = {
-                Text(text = "UserName/ Email")
-            },
-            shape = RoundedCornerShape(10.dp)
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        OutlinedTextField(
-            value = password,
-            onValueChange = {password = it},
-            label = {
-                Text(text = "Password")
-            },
-            shape = RoundedCornerShape(10.dp)
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        Button(onClick = {
-//            text = "Loading...."
-            loginUser(context,LoginRequest(userName,password),navController)
+       Column(
+           horizontalAlignment = Alignment.CenterHorizontally,
+           verticalArrangement = Arrangement.Top,
+           modifier = Modifier.fillMaxSize()
+       ) {
 
-        }) {
-           Text(text)
-        }
-        Spacer(modifier = Modifier.height(5.dp))
-        Text(
-            text = "Forgot Password?",
-            color = Color.Blue,
+           Image(
+               painter = painterResource(id = R.drawable.img_cartoon_logo),
+               contentDescription = "Cartoon_Logo",
+               modifier = Modifier
+                   .weight(1f)
+                   .height(200.dp),
 
+           )
 
-        )
+           Card(
+               modifier = Modifier
+                   .padding(10.dp)
+                   .weight(2f),
+               shape = RoundedCornerShape(32.dp)
+           ) {
+
+               Column(
+                   modifier = Modifier
+                       .padding(32.dp)
+                       .fillMaxSize(),
+               ) {
+                   Text(
+                       text = "Welcome Back!",
+                       fontSize = 32.sp,
+                       fontWeight = FontWeight.ExtraBold
+                   )
+                   Spacer(modifier = Modifier.height(20.dp))
+                   Spacer(modifier = Modifier.weight(1f))
+                   Column(
+                       verticalArrangement = Arrangement.Center,
+                       horizontalAlignment = Alignment.CenterHorizontally,
+                       modifier = Modifier.fillMaxWidth()
+                   ) {
+                       OutlinedTextField(
+                           value = userName,
+                           onValueChange = {
+                               userName = it
+                           },
+                           singleLine = true,
+                           trailingIcon = {
+                               if (userName.isNotBlank()){
+                                   IconButton(onClick = { userName = "" }) {
+                                       Icon(
+                                           imageVector = Icons.Filled.Clear,
+                                           contentDescription = "Clear")
+                                   }
+                               }
+                           },
+                           label = {
+                               Text(text = "UserName")
+                           },
+                           modifier = Modifier.fillMaxWidth(),
+                       )
+
+                       Spacer(modifier = Modifier.height(8.dp))
+                       OutlinedTextField(
+
+                           value = password,
+                           onValueChange ={
+                               password = it
+                           },
+                           modifier = Modifier.fillMaxWidth(),
+                           singleLine = true,
+                           label = { Text(text = "Password")},
+                           keyboardOptions = KeyboardOptions(
+                               keyboardType = KeyboardType.Password,
+                               imeAction = ImeAction.Done),
+                           visualTransformation = if(isPasswordVisible)
+                               VisualTransformation.None
+                           else
+                               PasswordVisualTransformation(),
+                           trailingIcon = {
+                               val image = if (isPasswordVisible)
+                                   Icons.Filled.Visibility
+                               else Icons.Filled.VisibilityOff
+                               val description = if (isPasswordVisible) "Hide password" else "Show password"
+
+                               IconButton(onClick = { isPasswordVisible =! isPasswordVisible }) {
+                                   Icon(
+                                       imageVector = image,
+                                       contentDescription = description
+                                   )
+
+                               }
+                           }
+                       )
+                       Spacer(modifier = Modifier.height(16.dp))
+                       Button(
+                           onClick = { loginUser(context, LoginRequest(userName,password),navController) },
+                           enabled = isFormValid,
+                           modifier = Modifier.fillMaxWidth()
+                       ) {
+                           Text(text = "Log in")
+                       }
+                       Spacer(modifier = Modifier.weight(1f))
+                       Row(
+                           modifier = Modifier.fillMaxWidth(),
+                           horizontalArrangement = Arrangement.SpaceBetween
+
+                       ) {
+                           TextButton(onClick = { navController.navigate(Routes.SIGN_IN_SCREEN) }) {
+                               Text(
+                                   text = "Sign In",
+                                   color = Color.Blue
+                               )
+                           }
+                           TextButton(onClick = { /*TODO*/ }) {
+                               Text(
+                                   text = "Forgot Password?",
+                                   color = Color.Gray
+                               )
+                           }
+                       }
+                   }
+               }
+
+           }
+       }
     }
 }
+
+
 
 fun loginUser(context: Context,loginRequest: LoginRequest, navController: NavHostController){
     val apiService = ApiService.getInstance()
@@ -113,18 +206,21 @@ fun loginUser(context: Context,loginRequest: LoginRequest, navController: NavHos
                         navController.navigate(Routes.CONTENT_SCREEN)
                     }
                     else if (response.code() == 401){
+                        Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show()
                         Log.d("TEST::", "onResponse: "+response.message())
-                        TODO("Show Toast or alert saying invalid credentials")
+
                     }
                     else{
+                        Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
                         Log.d("TEST::", "onResponse: "+response.message())
-                        TODO("Show Toast saying: Something went wrong, please try again later.")
+
                     }
                 }
 
                 override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
+                    Toast.makeText(context, "Please Check Internet Connection", Toast.LENGTH_SHORT).show()
                     Log.d("TEST::", "onResponse: "+t.message)
-                    TODO("Show toast saying: Please check internet connection ")
+
                 }
 
             })
@@ -135,5 +231,6 @@ fun loginUser(context: Context,loginRequest: LoginRequest, navController: NavHos
 @Composable
 fun LogInScreenPreview(){
     val navController = rememberNavController()
-//    LogInScreen(navController)
+    val context = rememberCompositionContext()
+
 }

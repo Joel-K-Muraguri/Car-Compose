@@ -36,13 +36,14 @@ class CarSharedViewModel @Inject constructor(
                     try {
                         val carList = apiService.getAutoList()
                         carListResponse = carList
-                        Log.d("TEST::", "getCarData: " + carList.size)
+//                        Log.d("TEST::", "getCarData: " + carList.size)
                     } catch (e: Exception) {
                         errorMessage = e.message.toString()
-                        Log.d("TEST::", "getCarData: " + errorMessage)
+//                        Log.d("TEST::", "getCarData: " + errorMessage)
                     }
                 }
             }
+
 
             fun getBrandData() {
                 viewModelScope.launch {
@@ -58,6 +59,16 @@ class CarSharedViewModel @Inject constructor(
                     }
                 }
             }
+//
+//    fun findCar(id:Int, carSharedViewModel: CarSharedViewModel): Car? {
+//
+//         val carInfo = carSharedViewModel.getCarData()
+//        for (car in carInfo.){
+//
+//        }
+//
+//    }
+
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()

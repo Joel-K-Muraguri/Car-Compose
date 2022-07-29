@@ -9,29 +9,26 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.ColorFilter.Companion.tint
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.joel.car_compose.R
 import com.joel.car_compose.components.Favourite
 import com.joel.car_compose.model.Car
 
 @Composable
 fun CarCardItem(
     car: Car,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClicked : (car: Car) -> Unit
 
 ) {
 
     Card(
         elevation = 5.dp,
         modifier = Modifier
-            .clickable {
-
-            },
+            .clickable(onClick = {
+                onItemClicked(car)
+            }),
         shape = RoundedCornerShape(10.dp),
         backgroundColor = White
 

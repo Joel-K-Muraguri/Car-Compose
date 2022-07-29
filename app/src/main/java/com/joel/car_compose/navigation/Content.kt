@@ -2,11 +2,13 @@ package com.joel.car_compose.navigation
 
 import android.content.Context
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.*
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -18,7 +20,8 @@ import com.joel.car_compose.ui.cars.CarSharedViewModel
 @Composable
 fun ContentScreen(
     carSharedViewModel: CarSharedViewModel,
-    context: Context
+    context: Context,
+
 ){
     val navController = rememberNavController()
     Scaffold(

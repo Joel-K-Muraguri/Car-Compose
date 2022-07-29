@@ -12,6 +12,7 @@ object Routes {
     const val CONTENT_SCREEN = "content_screen"
     const val DETAILED_SCREEN = "detailed_screen"
 
+
     //Profile Bar
     const val USER_SCREEN = "user_route"
     const val FAVOURITES_SCREEN = "favourites_route"

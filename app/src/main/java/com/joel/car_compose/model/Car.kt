@@ -1,5 +1,7 @@
 package com.joel.car_compose.model
 
+import android.os.Parcelable
+
 /*
 "id": 1,
 "name": "BMW 320i",
@@ -15,6 +17,8 @@ package com.joel.car_compose.model
 "year_of_manufacture": 2015,
 "brand": 2
 */
+
+@kotlinx.parcelize.Parcelize
 data class Car(
     val id: Int,
     val name: String,
@@ -29,4 +33,4 @@ data class Car(
     val transmission: Int,
     val year_of_manufacture : Int,
     val brand : Int,
-)
+) : Parcelable
