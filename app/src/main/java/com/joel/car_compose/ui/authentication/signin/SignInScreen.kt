@@ -57,6 +57,7 @@ fun SignInScreen(
     var newPassword by remember {
         mutableStateOf("")
     }
+    newPassword >= 8.toString()
     var confirmPassword by remember {
         mutableStateOf("")
     }
