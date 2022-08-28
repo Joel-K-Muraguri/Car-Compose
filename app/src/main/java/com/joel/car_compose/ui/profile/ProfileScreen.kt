@@ -10,7 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.joel.car_compose.utils.Routes
 import com.joel.car_compose.R
+import com.joel.car_compose.model.Car
+import com.joel.car_compose.ui.destinations.FavouriteScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 // Should have 4 buttons ,i.e,
 // image upload,
@@ -19,13 +25,17 @@ import com.joel.car_compose.R
 // terms and policy or help
 // Bids Made including invoices to be made
 
+@Destination
 @Composable
-fun ProfileScreen(){
-    ProfileScreenButtons()
+fun ProfileScreen(
+    navigator: DestinationsNavigator,
+
+){
+    ProfileScreenButtons(navigator)
 }
 
 @Composable
-fun ProfileScreenButtons(){
+fun ProfileScreenButtons(navigator: DestinationsNavigator){
     Column {
         ImageUploadButton()
         Spacer(modifier = Modifier.height(30.dp))
@@ -39,7 +49,7 @@ fun ProfileScreenButtons(){
             color = Color.Black,
             thickness = 1.dp
         )
-        MyWishListButton()
+        MyWishListButton(navigator)
         Spacer(modifier = Modifier.height(5.dp))
         Divider(
             color = Color.Black,
@@ -122,11 +132,15 @@ fun UserDetailsButton(){
 }
 
 @Composable
-fun MyWishListButton(){
+fun MyWishListButton(
+    navigator: DestinationsNavigator,
+){
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {  },
+            .clickable {
+                      navigator.navigate(FavouriteScreenDestination)
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
 
@@ -139,9 +153,7 @@ fun MyWishListButton(){
             Text(text = "Favorites")
         }
 
-
     }
-
 }
 
 @Composable
@@ -163,8 +175,6 @@ fun MyBids(){
 
 
     }
-
-
 }
 
 @Composable

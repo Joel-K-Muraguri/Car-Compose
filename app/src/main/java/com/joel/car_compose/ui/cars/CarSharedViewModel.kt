@@ -1,6 +1,6 @@
 package com.joel.car_compose.ui.cars
 
-import android.util.Log
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,25 +8,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joel.car_compose.model.Car
 import com.joel.car_compose.model.Brand
-import com.joel.car_compose.network.ApiService
-import com.joel.car_compose.utils.Routes
-import com.joel.car_compose.utils.UiEvent
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
+import com.joel.car_compose.model.network.ApiService
+import com.joel.car_compose.model.network.auth.SessionManager
+import com.joel.car_compose.model.fav.FavouriteResponseItem
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
-class CarSharedViewModel @Inject constructor(
-
+class CarSharedViewModel(
+context: Context
 ): ViewModel() {
 
     //TODO: Add MutableLiveData Return type
     //TODO: Add Function with LiveData return type to be used in the CarListScreen
 
+    val sessionManager = SessionManager(context)
     var carListResponse: List<Car> by mutableStateOf(listOf())
     var brandListResponse: List<Brand> by mutableStateOf(listOf())
+    var favouriteListResponse : List<FavouriteResponseItem> by mutableStateOf(listOf())
     private var errorMessage: String by mutableStateOf("An Unknown Error Occurred")
 
 
@@ -34,7 +32,7 @@ class CarSharedViewModel @Inject constructor(
                 viewModelScope.launch {
                     val apiService = ApiService.getInstance()
                     try {
-                        val carList = apiService.getAutoList()
+                        val carList = apiService.getCarList()
                         carListResponse = carList
 //                        Log.d("TEST::", "getCarData: " + carList.size)
                     } catch (e: Exception) {
@@ -51,51 +49,46 @@ class CarSharedViewModel @Inject constructor(
                     try {
                         val brandList = apiService.getBrandList()
                         brandListResponse = brandList
-                        //     Log.d("TEST::", "getBrandData: "+brandList.size)
+
 
                     } catch (e: Exception) {
                         errorMessage = e.message.toString()
-                        //        Log.d("TEST::", "getBrandData: "+errorMessage)
+
                     }
                 }
             }
-//
-//    fun findCar(id:Int, carSharedViewModel: CarSharedViewModel): Car? {
-//
-//         val carInfo = carSharedViewModel.getCarData()
-//        for (car in carInfo.){
-//
-//        }
-//
-//    }
+
+     fun getFavourites(context: Context){
+        val sessionManager = SessionManager(context)
+         viewModelScope.launch {
+             val apiService = ApiService.getInstance()
+             try {
+                 val favouriteList = apiService.fetchFavourites(token = "Token ${sessionManager.fetchAuthToken()}")
+                 favouriteListResponse = favouriteList
+
+             }
+             catch (e: Exception){
+                 errorMessage =  e.message.toString()
+             }
+         }
+    }
+    /*
+    TODO - Make the favourite button display toggle functionality
+    * */
+
+    fun getCarDetails(context: Context,car: Car){
+        val sessionManager = SessionManager(context)
+        viewModelScope.launch {
+            val apiService = ApiService.getInstance()
+            try {
+                val carDetails = apiService.fetchCarDetails(car.id)
 
 
-    private val _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
-
-    fun onEvents(events: ListScreenEvents) {
-        when (events) {
-            is ListScreenEvents.OnCarCardClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.DETAILED_SCREEN + "?carId=${events.car.id}"))
             }
-            is ListScreenEvents.OnAddToFavourite -> {
-
-
-            }
-            is ListScreenEvents.OnBrandSortClick -> {
-
-            }
-            is ListScreenEvents.OnSearch -> {
-
+            catch (e: Exception){
+                errorMessage = e.message.toString()
             }
         }
-    }
-
-
-    private fun sendUiEvent(event: UiEvent) {
-        viewModelScope.launch {
-            _uiEvent.send(event)
-      }
     }
 
 }

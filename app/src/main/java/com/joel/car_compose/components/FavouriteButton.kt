@@ -1,5 +1,10 @@
 package com.joel.car_compose.components
 
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -13,60 +18,139 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.joel.car_compose.model.network.ApiService
+import com.joel.car_compose.model.network.auth.SessionManager
+import com.joel.car_compose.model.fav.FavouriteCarItem
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 @Composable
-fun Favourite(){
+fun Favourite(
+    context: Context,
+    carId: Int
+){
     Surface(
         modifier =  Modifier.
                 size(40.dp),
         shape = CircleShape,
-        color = Color(0xDFF5FAFA)
-
+        color = Color(0xFFFFFFFF)
     ) {
-        FavouriteButton(modifier = Modifier.padding(8.dp))
+        FavouriteButton(context, carId)
     }
 
 }
 
 @Composable
 fun FavouriteButton(
-    modifier: Modifier = Modifier,
-   // color: Colors = Color(0xffE91E63),
-    color: Color = Color(0xFF0C0A0B)
+    context: Context,
+    carId: Int
 
 ){
-    val isFavourite by remember {
+    val isCheckedState = remember {
         mutableStateOf(false)
     }
 
+
     IconToggleButton(
-        checked = isFavourite,
+        // on below line we are
+        // specifying default check state
+        checked = isCheckedState.value,
+        // on below line we are adding on check change
         onCheckedChange = {
-            isFavourite != isFavourite
-        }
+            isCheckedState.value = !isCheckedState.value
+        },
+        // on below line we are adding a padding
+        modifier = Modifier
+            .padding(10.dp)
+            .clickable( onClick = {
+                toggleFavourite(context,carId)
+            })
     ) {
+        // on below line we are creating a
+        // variable for our transition
+        val transition = updateTransition(isCheckedState.value, label = "")
+
+        // on below line we are creating a variable for
+        // color of our icon
+        val tint by transition.animateColor(label = "iconColor") { isChecked ->
+            // if toggle button is checked we are setting color as red.
+            // in else condition we are setting color as black
+            if (isChecked) Color.Green else Color.Black
+        }
+
+//        // om below line we are specifying transition
+//        val size by transition.animateDp(
+//            transitionSpec = {
+//                // on below line we are specifying transition
+//                if (false isTransitioningTo true) {
+//                    // on below line we are specifying key frames
+//                    keyframes {
+//                        // on below line we are specifying animation duration
+//                        durationMillis = 250
+//                        // on below line we are specifying animations.
+//                        30.dp at 0 with LinearOutSlowInEasing // for 0-15 ms
+//                        35.dp at 15 with FastOutLinearInEasing // for 15-75 ms
+//                        40.dp at 75 // ms
+//                        35.dp at 150 // ms
+//                    }
+//                } else {
+//                    spring(stiffness = Spring.StiffnessVeryLow)
+//                }
+//            },
+//            label = "Size", )
+//
+
+        // on below line we are creating icon for our toggle button.
         Icon(
-            tint = color,
-            modifier = Modifier,
-            imageVector =
-            if (isFavourite) Icons.Filled.Favorite
-            else Icons.Default.FavoriteBorder,
-            contentDescription = null
+            // on below line we are specifying icon for our image vector.
+            imageVector = if (isCheckedState.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+            contentDescription = "Icon",
+            // on below line we are specifying
+            // tint for our icon.
+            tint = tint,
+            // on below line we are specifying
+            // size for our icon.
+       //     modifier = Modifier.size(size)
         )
-
     }
+}
+
+ fun toggleFavourite(context: Context, carId: Int){
+    val apiService = ApiService.getInstance()
+    val sessionManager = SessionManager(context)
+     Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
+    apiService.toggleFavoriteCar("Token ${sessionManager.fetchAuthToken()}", carId)
+        .enqueue(object: Callback<FavouriteCarItem>{
+        override fun onResponse(
+            call: Call<FavouriteCarItem>,
+            response: Response<FavouriteCarItem>,
+        ) {
+            if (response.code() == 200){
+                Toast.makeText(context,response.body()!!.message, Toast.LENGTH_SHORT).show()
+            }
+            else if (response.code() == 401){
+                Toast.makeText(context,"Unauthorized", Toast.LENGTH_SHORT).show()
+
+            }
+            else
+                Toast.makeText(context,"Something Went Wrong", Toast.LENGTH_SHORT).show()
+
+        }
+
+        override fun onFailure(call: Call<FavouriteCarItem>, t: Throwable) {
+            Toast.makeText(context, "Check your Internet Connection", Toast.LENGTH_SHORT).show()
+            TODO("Not yet implemented")
+        }
+
+    })
 
 }
 
-@Composable
-fun FavouriteColor(){
-    Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
-}
-
-@Preview
-@Composable
-fun FavouriteButtonPreview(){
-    Favourite()
-}
+//@Preview
+//@Composable
+//fun FavouriteButtonPreview(){
+//    Favourite()
+//}

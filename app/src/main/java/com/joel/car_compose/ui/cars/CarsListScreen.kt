@@ -1,187 +1,172 @@
 package com.joel.car_compose.ui.cars
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import com.joel.car_compose.auth.SessionManager
+import com.joel.car_compose.R
+import com.joel.car_compose.components.BrandCardItem
+import com.joel.car_compose.components.CarCardItem
 import com.joel.car_compose.model.Brand
 import com.joel.car_compose.model.Car
-import com.joel.car_compose.utils.Routes
+import com.joel.car_compose.ui.destinations.ProfileScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination
 @Composable
 fun ListScreen(
-    navController: NavHostController,
-    carSharedViewModel: CarSharedViewModel,
-    context: Context,
-){
+    navigator: DestinationsNavigator,
+    ){
+    val context = LocalContext.current
 
-    Surface {
-        ListScreenTools(
-            navController,
-            carSharedViewModel,
-        )
-    }
-//    val token = SessionManager(context).fetchAuthToken()
+    val carSharedViewModel = CarSharedViewModel(context)
+    ListScreenTools(navigator , carSharedViewModel )
+
 }
 
 @Composable
 fun ListScreenTools(
-    navController: NavHostController,
+    navigator: DestinationsNavigator,
     carSharedViewModel: CarSharedViewModel,
 
 ){
 
     Surface(
         modifier = Modifier
-            .padding(all = 10.dp,)
+            .padding(all = 10.dp)
 
     ) {
-        Column() {
-            SearchAppBar(
-                hint = "Search car,brand..",
-                modifier = Modifier.padding(16.dp)
-            ){
-
-
-            }
-            Spacer(modifier = Modifier.height(10.dp))
+        Column{
+            NavigationBar(navigator)
+            Spacer(modifier = Modifier.height(5.dp))
 
             Text(text = "Brands")
             Spacer(modifier = Modifier.height(5.dp))
 
-
             BrandList(
                 brandList = carSharedViewModel.brandListResponse,
-                carSharedViewModel
             )
             carSharedViewModel.getBrandData()
 
-
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             CarList(
                 carList = carSharedViewModel.carListResponse,
-                navController
+                navigator,
             )
             carSharedViewModel.getCarData()
-
-        }
-
-    }
-}
-
-@Composable
-fun SearchAppBar(
-    modifier: Modifier = Modifier,
-    hint : String = "",
-    onSearch : (String) -> Unit = {},
-){
-    var text by remember {
-        mutableStateOf("")
-    }
-    var hintIsDisplayed by remember {
-        mutableStateOf(hint != "")
-    }
-
-    Box(modifier = Modifier){
-        BasicTextField(
-            value = text,
-            onValueChange = {
-                text = it
-                onSearch(it)
-            },
-            maxLines = 1,
-            singleLine = true,
-            textStyle = TextStyle(color = Color.Black),
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .shadow(5.dp, RoundedCornerShape(10.dp))
-//                .background(color = Color.White, RoundedCornerShape(10.dp))
-//                .padding(horizontal = 20.dp, vertical = 12.dp)
-//                .onFocusChanged {
-//                    // hintIsDisplayed = it != FocusState.hasFocus
-//                }
-        )
-        if (hintIsDisplayed){
-            Text(
-                text = text,
-                color = Color.LightGray,
-                modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
-            )
         }
     }
 }
+
 
 @Composable
 fun CarList(
     carList : List<Car>,
-    navController: NavHostController
+    navigator: DestinationsNavigator,
+
 ){
+
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(32.dp),
+        verticalArrangement = Arrangement.spacedBy(25.dp),
+    )
+    {
+        item {
 
-    ){
-       itemsIndexed(
-           items = carList){ _, car->
-           CarCardItem(
-               car = car,
-               onItemClicked = { car ->
-                   gotoCarDetails(car,navController)
-               }
-           )
-       }
+
+        }
+        items(
+            items = carList,
+            itemContent = {
+                CarCardItem(
+                    car = it,
+                    navigator
+                )
+            }
+        )
     }
-
 }
 
 @Composable
 fun BrandList(
     brandList : List<Brand>,
-    carSharedViewModel: CarSharedViewModel
-
 ){
     LazyRow(
         modifier = Modifier
-            .padding(all = 5.dp),
-
+            .padding(all = 2.dp),
 
     ){
         itemsIndexed(
             items = brandList){ _, brand->
             BrandCardItem(
                 brand = brand,
-                modifier = Modifier.clickable {
-                   // carSharedViewModel.onEvents(ListScreenEvents.OnBrandSortClick)
-                }
             )
         }
     }
 }
 
-fun gotoCarDetails(car: Car, navController: NavController) {
-    navController.currentBackStackEntry?.arguments?.putParcelable("car", car)
-    navController.navigate(Routes.DETAILED_SCREEN)
+@Composable
+fun NavigationBar(
+    navigator: DestinationsNavigator,
+
+){
+    Row(
+
+       verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(8.dp)
+    ) {
+        Box(
+
+            modifier = Modifier
+                .background(color = Color.LightGray, shape = RoundedCornerShape(20.dp))
+                .size(60.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            IconButton(
+                onClick = {
+                    navigator.navigate(ProfileScreenDestination)
+                },
+
+                ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_person_24),
+                    contentDescription = "person",
+                    modifier = Modifier
+                        .height(55.dp)
+                        .width(55.dp),
+                    tint = Color.Black
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            Text(
+                text = "Hello Joel",
+                style = MaterialTheme.typography.h4
+
+            )
+            Text(
+                text = "Welcome Back to Auto Cars",
+                style = MaterialTheme.typography.h6
+            )
+        }
+    }
 }
 
 
-/* @Preview(showBackground = true)
-@Composable
-fun ListScreenPreview(){
-    val navController = rememberNavController()
-    ListScreen(navController)
-} */
+
+
