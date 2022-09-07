@@ -14,10 +14,8 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 
 class AutoCars : ComponentActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             CarComposeTheme {
                 // A surface container using the 'background' color from the theme

@@ -1,10 +1,10 @@
 package com.joel.car_compose.model.network
 
-import com.joel.car_compose.model.network.auth.LoginRequest
-import com.joel.car_compose.model.network.auth.RegisterRequest
-import com.joel.car_compose.model.network.auth.TokenResponse
-import com.joel.car_compose.model.Car
-import com.joel.car_compose.model.Brand
+import com.joel.car_compose.model.auth.LoginRequest
+import com.joel.car_compose.model.auth.RegisterRequest
+import com.joel.car_compose.model.auth.TokenResponse
+import com.joel.car_compose.model.data.Brand
+import com.joel.car_compose.model.data.CarItem
 import com.joel.car_compose.model.fav.FavouriteCarItem
 import com.joel.car_compose.model.fav.FavouriteResponseItem
 import com.joel.car_compose.utils.ApiConstants
@@ -22,7 +22,7 @@ interface ApiService {
     fun login(@Body request: LoginRequest) : Call<TokenResponse>
 
     @GET(ApiConstants.CAR_LIST_ENDPOINT)
-    suspend fun getCarList() : List<Car>
+    suspend fun getCarList() : List<CarItem>
 
     @GET(ApiConstants.CAR_BRAND_ENDPOINT)
     suspend fun getBrandList() : List<Brand>
@@ -42,7 +42,7 @@ interface ApiService {
      @GET(ApiConstants.CAR_DETAILS)
     fun fetchCarDetails(
          @Path("id") id: Int
-    ) : Call<Car>
+    ) : Call<CarItem>
 
 
     companion object{

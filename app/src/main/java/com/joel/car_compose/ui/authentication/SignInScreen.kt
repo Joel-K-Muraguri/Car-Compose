@@ -3,8 +3,8 @@ package com.joel.car_compose.ui.authentication
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -17,22 +17,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import com.joel.car_compose.model.network.auth.RegisterRequest
-import com.joel.car_compose.model.network.auth.SessionManager
-import com.joel.car_compose.model.network.auth.TokenResponse
+import com.joel.car_compose.model.auth.RegisterRequest
+import com.joel.car_compose.model.auth.SessionManager
+import com.joel.car_compose.model.auth.TokenResponse
 import com.joel.car_compose.model.network.ApiService
-import com.joel.car_compose.utils.Routes
-import com.joel.car_compose.R
-import com.joel.car_compose.model.Car
+import com.joel.car_compose.components.LogoImage
 import com.joel.car_compose.ui.destinations.ListScreenDestination
 import com.joel.car_compose.ui.destinations.LogInScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -47,8 +44,17 @@ fun SignInScreen(
     navigator: DestinationsNavigator,
 
 ){
-    val context = LocalContext.current
 
+    Scaffold(
+        backgroundColor = Color.Blue,
+        content = {
+            SignInScreenContent(navigator)
+        }
+    )
+}
+
+@Composable
+fun SignInScreenContent(navigator: DestinationsNavigator) {
     var userName by remember {
         mutableStateOf("")
     }
@@ -71,7 +77,7 @@ fun SignInScreen(
     confirmPassword == newPassword
 
     val isPasswordValid by derivedStateOf {
-       newPassword == confirmPassword
+        newPassword == confirmPassword
     }
     val isFormValid by derivedStateOf {
         userName.isNotBlank() && email.isNotBlank() && location.isNotBlank() && phoneNumber.isNotBlank() && newPassword.isNotBlank() && confirmPassword.isNotBlank() && isPasswordValid
@@ -79,31 +85,18 @@ fun SignInScreen(
     var isPasswordVisible by remember {
         mutableStateOf(false)
     }
+    val context = LocalContext.current
 
-    Scaffold(
-        backgroundColor = Color.Blue
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier.fillMaxSize()
-        ) {
-
-            Image(
-                painter = painterResource(id = R.drawable.img_cartoon_logo),
-                contentDescription = "Cartoon_Logo",
-                modifier = Modifier
-                    .weight(1f)
-                    .height(200.dp),
-
-                )
-
-
+    LazyColumn {
+        item {
+            LogoImage()
+        }
+        item {
             Card(
                 modifier = Modifier
-                    .padding(10.dp)
-                    .weight(5f),
+                    .padding(10.dp),
                 shape = RoundedCornerShape(32.dp)
+
             ) {
 
                 Column(
@@ -129,7 +122,7 @@ fun SignInScreen(
                             },
                             singleLine = true,
                             trailingIcon = {
-                                if (userName.isNotBlank()){
+                                if (userName.isNotBlank()) {
                                     IconButton(onClick = { userName = "" }) {
                                         Icon(
                                             imageVector = Icons.Filled.Clear,
@@ -150,7 +143,7 @@ fun SignInScreen(
                             },
                             singleLine = true,
                             trailingIcon = {
-                                if (phoneNumber.isNotBlank()){
+                                if (phoneNumber.isNotBlank()) {
                                     IconButton(onClick = { phoneNumber = "" }) {
                                         Icon(
                                             imageVector = Icons.Filled.Clear,
@@ -164,7 +157,7 @@ fun SignInScreen(
                             modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Number,
-                                ),
+                            ),
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
@@ -174,7 +167,7 @@ fun SignInScreen(
                             },
                             singleLine = true,
                             trailingIcon = {
-                                if (email.isNotBlank()){
+                                if (email.isNotBlank()) {
                                     IconButton(onClick = { email = "" }) {
                                         Icon(
                                             imageVector = Icons.Filled.Clear,
@@ -195,7 +188,7 @@ fun SignInScreen(
                             },
                             singleLine = true,
                             trailingIcon = {
-                                if (location.isNotBlank()){
+                                if (location.isNotBlank()) {
                                     IconButton(onClick = { location = "" }) {
                                         Icon(
                                             imageVector = Icons.Filled.Clear,
@@ -212,16 +205,16 @@ fun SignInScreen(
                         Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
                             value = newPassword,
-                            onValueChange ={
+                            onValueChange = {
                                 newPassword = it
                             },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
-                            label = { Text(text = "New Password")},
+                            label = { Text(text = "New Password") },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Password,
                                 imeAction = ImeAction.Done),
-                            visualTransformation = if(isPasswordVisible)
+                            visualTransformation = if (isPasswordVisible)
                                 VisualTransformation.None
                             else
                                 PasswordVisualTransformation(),
@@ -229,9 +222,10 @@ fun SignInScreen(
                                 val image = if (isPasswordVisible)
                                     Icons.Filled.Visibility
                                 else Icons.Filled.VisibilityOff
-                                val description = if (isPasswordVisible) "Hide password" else "Show password"
+                                val description =
+                                    if (isPasswordVisible) "Hide password" else "Show password"
 
-                                IconButton(onClick = { isPasswordVisible =! isPasswordVisible }) {
+                                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                                     Icon(
                                         imageVector = image,
                                         contentDescription = description
@@ -240,18 +234,28 @@ fun SignInScreen(
                                 }
                             }
                         )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Box(contentAlignment = Alignment.TopStart) {
+                            Text(
+                                text = "Password should be at least 8 characters",
+                                style = MaterialTheme.typography.caption,
+                                textAlign = TextAlign.Start
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
                             value = confirmPassword,
-                            onValueChange ={
+                            onValueChange = {
                                 confirmPassword = it
                             },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
-                            label = { Text(text = "Confirm Password")},
+                            label = { Text(text = "Confirm Password") },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Password,
                                 imeAction = ImeAction.Done),
-                            visualTransformation = if(isPasswordVisible)
+                            visualTransformation = if (isPasswordVisible)
                                 VisualTransformation.None
                             else
                                 PasswordVisualTransformation(),
@@ -259,9 +263,10 @@ fun SignInScreen(
                                 val image = if (isPasswordVisible)
                                     Icons.Filled.Visibility
                                 else Icons.Filled.VisibilityOff
-                                val description = if (isPasswordVisible) "Hide password" else "Show password"
+                                val description =
+                                    if (isPasswordVisible) "Hide password" else "Show password"
 
-                                IconButton(onClick = { isPasswordVisible =! isPasswordVisible }) {
+                                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                                     Icon(
                                         imageVector = image,
                                         contentDescription = description
@@ -270,22 +275,38 @@ fun SignInScreen(
                                 }
                             }
                         )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Box(contentAlignment = Alignment.TopStart) {
+                            Text(
+                                text = "Password should be at least 8 characters",
+                                style = MaterialTheme.typography.caption,
+                                textAlign = TextAlign.Start
+                            )
+                        }
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
                             onClick = {
-                                      register(context, RegisterRequest(location,email,phoneNumber,userName, confirmPassword),navigator,)
-                                      },
+                                register(
+                                    context,
+                                    RegisterRequest(location,
+                                        email,
+                                        phoneNumber,
+                                        userName,
+                                        confirmPassword),
+                                    navigator,
+                                )
+                            },
                             enabled = isFormValid,
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(text = "Sign in")
                         }
 
-                            TextButton(onClick = { navigator.navigate(LogInScreenDestination) }) {
-                                Text(
-                                    text = "Already have an Account?",
-                                    color = Color.Blue
-                                )
+                        TextButton(onClick = { navigator.navigate(LogInScreenDestination) }) {
+                            Text(
+                                text = "Already have an Account?",
+                                color = Color.Blue
+                            )
 
                         }
                     }
@@ -293,9 +314,7 @@ fun SignInScreen(
 
             }
         }
-    }
-
-
+}
 }
 
 fun register(
@@ -303,7 +322,7 @@ fun register(
     registerRequest: RegisterRequest,
     navigator: DestinationsNavigator,
 
-){
+    ) {
     val apiService = ApiService.getInstance()
     val sessionManager = SessionManager(context)
 
@@ -313,37 +332,34 @@ fun register(
         override fun onResponse(
             call: Call<TokenResponse>,
             response: Response<TokenResponse>
-        )
-        {
-            if (response.code() == 200 && response.body() != null){
+        ) {
+            if (response.code() == 200 && response.body() != null) {
                 //Successful Registration
                 Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
                 val userData = response.body()
                 sessionManager.saveAuthToken(userData!!.token)
                 navigator.navigate(ListScreenDestination)
-            }
-            else if (response.code() == 401){
-                Log.d("TEST::", "onResponse: "+response.message())
+            } else if (response.code() == 401) {
+                Log.d("TEST::", "onResponse: " + response.message())
                 //Already existing credentials
                 Toast.makeText(context, "Existing Credentials", Toast.LENGTH_SHORT).show()
-            }
-            else if(response.code() == 403){
-                Toast.makeText(context,"Forbidden", Toast.LENGTH_SHORT).show()
-            }
-            else
+            } else if (response.code() == 403) {
+                Toast.makeText(context, "Forbidden", Toast.LENGTH_SHORT).show()
+            } else
             //Something went wrong
-                Log.d("TEST::", "onResponse: "+response.message())
+                Log.d("TEST::", "onResponse: " + response.message())
             Toast.makeText(context, "Something went Wrong", Toast.LENGTH_SHORT).show()
 
         }
 
         override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
-            Log.d("TEST::", "onResponse: "+ t.message)
-            Toast.makeText(context, "Check your Internet Connection", Toast.LENGTH_SHORT).show()
+            Log.d("TEST::", "onResponse: " + t.message)
+            Toast.makeText(context, "Check your Internet Connection", Toast.LENGTH_SHORT)
+                .show()
         }
-
     })
 }
+
 
 
 

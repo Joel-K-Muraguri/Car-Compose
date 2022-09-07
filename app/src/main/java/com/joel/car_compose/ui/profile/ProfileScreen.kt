@@ -10,10 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.joel.car_compose.utils.Routes
 import com.joel.car_compose.R
-import com.joel.car_compose.model.Car
 import com.joel.car_compose.ui.destinations.FavouriteScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

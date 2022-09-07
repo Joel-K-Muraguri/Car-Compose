@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.joel.car_compose.model.network.ApiService
-import com.joel.car_compose.model.network.auth.SessionManager
+import com.joel.car_compose.model.auth.SessionManager
 import com.joel.car_compose.model.fav.FavouriteCarItem
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,17 +36,16 @@ fun Favourite(
         modifier =  Modifier.
                 size(40.dp),
         shape = CircleShape,
-        color = Color(0xFFFFFFFF)
+        color = MaterialTheme.colors.background
     ) {
-        FavouriteButton(context, carId)
+        FavouriteButton()
     }
 
 }
 
 @Composable
 fun FavouriteButton(
-    context: Context,
-    carId: Int
+
 
 ){
     val isCheckedState = remember {
@@ -55,65 +54,30 @@ fun FavouriteButton(
 
 
     IconToggleButton(
-        // on below line we are
-        // specifying default check state
         checked = isCheckedState.value,
-        // on below line we are adding on check change
         onCheckedChange = {
             isCheckedState.value = !isCheckedState.value
         },
-        // on below line we are adding a padding
+
         modifier = Modifier
             .padding(10.dp)
             .clickable( onClick = {
-                toggleFavourite(context,carId)
+
             })
     ) {
-        // on below line we are creating a
-        // variable for our transition
-        val transition = updateTransition(isCheckedState.value, label = "")
 
-        // on below line we are creating a variable for
-        // color of our icon
+        val transition = updateTransition(isCheckedState.value, label = "")
         val tint by transition.animateColor(label = "iconColor") { isChecked ->
-            // if toggle button is checked we are setting color as red.
-            // in else condition we are setting color as black
-            if (isChecked) Color.Green else Color.Black
+
+            if (isChecked) Color.Red else Color.Black
         }
 
-//        // om below line we are specifying transition
-//        val size by transition.animateDp(
-//            transitionSpec = {
-//                // on below line we are specifying transition
-//                if (false isTransitioningTo true) {
-//                    // on below line we are specifying key frames
-//                    keyframes {
-//                        // on below line we are specifying animation duration
-//                        durationMillis = 250
-//                        // on below line we are specifying animations.
-//                        30.dp at 0 with LinearOutSlowInEasing // for 0-15 ms
-//                        35.dp at 15 with FastOutLinearInEasing // for 15-75 ms
-//                        40.dp at 75 // ms
-//                        35.dp at 150 // ms
-//                    }
-//                } else {
-//                    spring(stiffness = Spring.StiffnessVeryLow)
-//                }
-//            },
-//            label = "Size", )
-//
 
-        // on below line we are creating icon for our toggle button.
         Icon(
-            // on below line we are specifying icon for our image vector.
             imageVector = if (isCheckedState.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
             contentDescription = "Icon",
-            // on below line we are specifying
-            // tint for our icon.
             tint = tint,
-            // on below line we are specifying
-            // size for our icon.
-       //     modifier = Modifier.size(size)
+
         )
     }
 }
@@ -148,9 +112,3 @@ fun FavouriteButton(
     })
 
 }
-
-//@Preview
-//@Composable
-//fun FavouriteButtonPreview(){
-//    Favourite()
-//}

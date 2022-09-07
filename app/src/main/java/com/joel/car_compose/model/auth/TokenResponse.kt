@@ -1,4 +1,4 @@
-package com.joel.car_compose.model.network.auth
+package com.joel.car_compose.model.auth
 
 data class TokenResponse(
     val token: String,

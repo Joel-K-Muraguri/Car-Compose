@@ -1,4 +1,4 @@
-package com.joel.car_compose.model.network.auth
+package com.joel.car_compose.model.auth
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -1,4 +1,4 @@
-package com.joel.car_compose.model
+package com.joel.car_compose.model.data
 
 
 

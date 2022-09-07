@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.joel.car_compose.R
 import com.joel.car_compose.components.BrandCardItem
 import com.joel.car_compose.components.CarCardItem
-import com.joel.car_compose.model.Brand
-import com.joel.car_compose.model.Car
+import com.joel.car_compose.model.data.Brand
+import com.joel.car_compose.model.data.CarItem
 import com.joel.car_compose.ui.destinations.ProfileScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -41,7 +41,7 @@ fun ListScreenTools(
     navigator: DestinationsNavigator,
     carSharedViewModel: CarSharedViewModel,
 
-){
+    ){
 
     Surface(
         modifier = Modifier
@@ -73,10 +73,10 @@ fun ListScreenTools(
 
 @Composable
 fun CarList(
-    carList : List<Car>,
+    carList : List<CarItem>,
     navigator: DestinationsNavigator,
 
-){
+    ){
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(25.dp),

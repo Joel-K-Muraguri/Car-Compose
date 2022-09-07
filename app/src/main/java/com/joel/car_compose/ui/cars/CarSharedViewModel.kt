@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joel.car_compose.model.Car
-import com.joel.car_compose.model.Brand
+import com.joel.car_compose.model.data.Brand
 import com.joel.car_compose.model.network.ApiService
-import com.joel.car_compose.model.network.auth.SessionManager
+import com.joel.car_compose.model.auth.SessionManager
+import com.joel.car_compose.model.data.CarItem
 import com.joel.car_compose.model.fav.FavouriteResponseItem
 import kotlinx.coroutines.launch
 
@@ -18,11 +18,8 @@ class CarSharedViewModel(
 context: Context
 ): ViewModel() {
 
-    //TODO: Add MutableLiveData Return type
-    //TODO: Add Function with LiveData return type to be used in the CarListScreen
 
-    val sessionManager = SessionManager(context)
-    var carListResponse: List<Car> by mutableStateOf(listOf())
+    var carListResponse: List<CarItem> by mutableStateOf(listOf())
     var brandListResponse: List<Brand> by mutableStateOf(listOf())
     var favouriteListResponse : List<FavouriteResponseItem> by mutableStateOf(listOf())
     private var errorMessage: String by mutableStateOf("An Unknown Error Occurred")
@@ -50,7 +47,6 @@ context: Context
                         val brandList = apiService.getBrandList()
                         brandListResponse = brandList
 
-
                     } catch (e: Exception) {
                         errorMessage = e.message.toString()
 
@@ -72,17 +68,14 @@ context: Context
              }
          }
     }
-    /*
-    TODO - Make the favourite button display toggle functionality
-    * */
 
-    fun getCarDetails(context: Context,car: Car){
+
+    fun getCarDetails(context: Context,car: CarItem){
         val sessionManager = SessionManager(context)
         viewModelScope.launch {
             val apiService = ApiService.getInstance()
             try {
                 val carDetails = apiService.fetchCarDetails(car.id)
-
 
             }
             catch (e: Exception){

@@ -42,7 +42,7 @@ fun CarComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
     }
 
     MaterialTheme(
-        colors = LightColorPalette,
+        colors = colors,
         typography = Typography,
         shapes = Shapes,
         content = content

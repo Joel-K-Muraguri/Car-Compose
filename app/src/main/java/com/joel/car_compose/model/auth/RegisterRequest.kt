@@ -1,4 +1,4 @@
-package com.joel.car_compose.model.network.auth
+package com.joel.car_compose.model.auth
 
 // number, password, email, name, location
 data class RegisterRequest(

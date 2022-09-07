@@ -20,18 +20,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.joel.car_compose.model.network.auth.LoginRequest
-import com.joel.car_compose.model.network.auth.SessionManager
-import com.joel.car_compose.model.network.auth.TokenResponse
+import com.joel.car_compose.model.auth.LoginRequest
+import com.joel.car_compose.model.auth.SessionManager
+import com.joel.car_compose.model.auth.TokenResponse
 import com.joel.car_compose.model.network.ApiService
-import com.joel.car_compose.utils.Routes
 import com.joel.car_compose.R
-import com.joel.car_compose.model.Car
 import com.joel.car_compose.ui.destinations.ListScreenDestination
 import com.joel.car_compose.ui.destinations.SignInScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -156,6 +154,14 @@ fun LogInScreen(
                                }
                            }
                        )
+                       Spacer(modifier = Modifier.height(8.dp))
+                       Box(contentAlignment = Alignment.TopStart) {
+                           Text(
+                               text = "Password should be at least 8 characters",
+                               style = MaterialTheme.typography.caption,
+                               textAlign = TextAlign.Start
+                           )
+                       }
                        Spacer(modifier = Modifier.height(16.dp))
                        Button(
                            onClick = { loginUser(context, LoginRequest(userName,password),navigator) },
@@ -168,18 +174,19 @@ fun LogInScreen(
                        Row(
                            modifier = Modifier.fillMaxWidth(),
                            horizontalArrangement = Arrangement.SpaceBetween
-
                        ) {
-                           TextButton(onClick = { navigator.navigate(SignInScreenDestination) }) {
-                               Text(
-                                   text = "Sign In",
-                                   color = Color.Blue
-                               )
-                           }
                            TextButton(onClick = { /*TODO*/ }) {
                                Text(
                                    text = "Forgot Password?",
-                                   color = Color.Gray
+                                   color = Color.Blue,
+                                   style = MaterialTheme.typography.caption
+                               )
+                           }
+                           TextButton(onClick = { navigator.navigate(SignInScreenDestination) }) {
+                               Text(
+                                   text = "Sign In",
+                                   color = Color.Blue,
+                                   style = MaterialTheme.typography.h6
                                )
                            }
                        }

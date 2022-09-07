@@ -13,14 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.joel.car_compose.utils.Routes
 import com.joel.car_compose.R
-import com.joel.car_compose.model.Car
 import com.joel.car_compose.ui.destinations.LogInScreenDestination
 import com.joel.car_compose.ui.destinations.SignInScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination

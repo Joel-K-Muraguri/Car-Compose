@@ -21,6 +21,7 @@ import com.joel.car_compose.theme.BlueButton
 import com.joel.car_compose.theme.White
 import com.joel.car_compose.theme.Yellowish
 import com.joel.car_compose.ui.destinations.AuthenticationScreenDestination
+import com.joel.car_compose.ui.destinations.LogInScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -79,13 +80,20 @@ fun PageContentSection(
                    verticalAlignment = Alignment.CenterVertically,
                    horizontalArrangement = Arrangement.End
                ) {
-                   Text(
-                       text = "Skip",
-                       style = MaterialTheme.typography.body1,
-                       color = Color.White,
-                       fontWeight = FontWeight.Bold
+                   TextButton(
+                       onClick = {
+                                 navigator.navigate(LogInScreenDestination)
+                       },
+                       shape = RoundedCornerShape(20.dp)
+                   ) {
+                       Text(
+                           text = "Skip",
+                           style = MaterialTheme.typography.body1,
+                           color = Color.White,
+                           fontWeight = FontWeight.Bold
 
-                   )
+                       )
+                   }
                    Spacer(modifier = Modifier.padding(50.dp))
 
                    Button(
@@ -105,11 +113,13 @@ fun PageContentSection(
                            imageVector = Icons.Default.ArrowForward,
                            contentDescription = "",
                            modifier = Modifier
-                               .background(Color.White.copy(0.1f))
+                               .background(Color.White.copy(0.1f),
+                                   shape = RoundedCornerShape(20.dp))
                                .clip(RoundedCornerShape(50.dp))
                                .padding(5.dp)
                                .size(35.dp)
                        )
+
                        Spacer(modifier = Modifier.padding(5.dp))
 
                        Text(
