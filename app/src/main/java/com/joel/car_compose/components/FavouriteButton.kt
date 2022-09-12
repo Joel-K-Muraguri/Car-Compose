@@ -40,7 +40,6 @@ fun Favourite(
     ) {
         FavouriteButton()
     }
-
 }
 
 @Composable

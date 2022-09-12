@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.joel.car_compose.model.fav.FavouriteResponseItem
-import com.joel.car_compose.ui.cars.CarSharedViewModel
+import com.joel.car_compose.ui.cars.CarHomeViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -21,12 +21,12 @@ fun FavouriteScreen(
 
 
     val context = LocalContext.current
-    val carSharedViewModel = CarSharedViewModel(context)
+    val carHomeViewModel = CarHomeViewModel()
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        FavouriteScreenTools(carList = carSharedViewModel.favouriteListResponse, navigator )
-                carSharedViewModel.getFavourites(context)
+        FavouriteScreenTools(carList = carHomeViewModel.favouriteListResponse, navigator )
+                carHomeViewModel.getFavourites(context)
 
     }
 

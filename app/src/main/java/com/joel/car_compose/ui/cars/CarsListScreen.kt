@@ -31,15 +31,15 @@ fun ListScreen(
     ){
     val context = LocalContext.current
 
-    val carSharedViewModel = CarSharedViewModel(context)
-    ListScreenTools(navigator , carSharedViewModel )
+    val carHomeViewModel = CarHomeViewModel()
+    ListScreenTools(navigator , carHomeViewModel )
 
 }
 
 @Composable
 fun ListScreenTools(
     navigator: DestinationsNavigator,
-    carSharedViewModel: CarSharedViewModel,
+    carHomeViewModel: CarHomeViewModel,
 
     ){
 
@@ -56,16 +56,16 @@ fun ListScreenTools(
             Spacer(modifier = Modifier.height(5.dp))
 
             BrandList(
-                brandList = carSharedViewModel.brandListResponse,
+                brandList = carHomeViewModel.brandListResponse,
             )
-            carSharedViewModel.getBrandData()
+            carHomeViewModel.getBrandData()
 
             Spacer(modifier = Modifier.height(5.dp))
             CarList(
-                carList = carSharedViewModel.carListResponse,
+                carList = carHomeViewModel.carListResponse,
                 navigator,
             )
-            carSharedViewModel.getCarData()
+            carHomeViewModel.getCarData()
         }
     }
 }

@@ -29,7 +29,8 @@ fun CarImage( car: CarItem){
 fun LogoImage(){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier.fillMaxSize()
     ) {
         Box(contentAlignment = Alignment.Center) {
             Image(

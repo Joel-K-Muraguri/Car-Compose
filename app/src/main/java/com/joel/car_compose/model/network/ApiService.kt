@@ -16,10 +16,15 @@ import retrofit2.http.*
 interface ApiService {
 
     @POST(ApiConstants.REGISTER_ENDPOINT)
-    fun register (@Body request: RegisterRequest) : Call<TokenResponse>
+    fun register (@Body request: RegisterRequest) : TokenResponse
 
     @POST(ApiConstants.LOG_IN_ENDPOINT)
-    fun login(@Body request: LoginRequest) : Call<TokenResponse>
+    fun login(@Body request: LoginRequest) : TokenResponse
+
+    @POST(ApiConstants.AUTHENTICATE)
+    fun authenticate(
+        @Header("Authorization") token : String
+    ) : TokenResponse
 
     @GET(ApiConstants.CAR_LIST_ENDPOINT)
     suspend fun getCarList() : List<CarItem>

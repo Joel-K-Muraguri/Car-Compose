@@ -7,6 +7,7 @@ object ApiConstants {
     const val CAR_BRAND_ENDPOINT = "/brands"
     const val REGISTER_ENDPOINT = "/register"
     const val LOG_IN_ENDPOINT = "/login"
+    const val AUTHENTICATE = "/authenticate"
     const val FAVOURITES_ENDPOINT = "/favorites"
     const val USER_TOKEN = "com.joel.car_compose.USER_TOKEN"
     const val FAVOURITE_CAR_ID = "/toggle/favorite/{car_id}"

@@ -1,15 +1,13 @@
 package com.joel.car_compose.ui.authentication
 
-import android.content.Context
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
@@ -25,26 +23,24 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joel.car_compose.model.auth.RegisterRequest
-import com.joel.car_compose.model.auth.SessionManager
-import com.joel.car_compose.model.auth.TokenResponse
-import com.joel.car_compose.model.network.ApiService
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.joel.car_compose.components.LogoImage
+import com.joel.car_compose.model.auth.AuthResult
+import com.joel.car_compose.model.auth.AuthUiEvent
+import com.joel.car_compose.model.auth.AuthViewModel
 import com.joel.car_compose.ui.destinations.ListScreenDestination
 import com.joel.car_compose.ui.destinations.LogInScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.ramcosta.composedestinations.navigation.popUpTo
 
 @Destination
 @Composable
 fun SignInScreen(
     navigator: DestinationsNavigator,
 
-){
 
+){
     Scaffold(
         backgroundColor = Color.Blue,
         content = {
@@ -54,42 +50,49 @@ fun SignInScreen(
 }
 
 @Composable
-fun SignInScreenContent(navigator: DestinationsNavigator) {
-    var userName by remember {
-        mutableStateOf("")
-    }
-    var phoneNumber by remember {
-        mutableStateOf("")
-    }
-    var email by remember {
-        mutableStateOf("")
-    }
-    var location by remember {
-        mutableStateOf("")
-    }
-    var newPassword by remember {
-        mutableStateOf("")
-    }
-    newPassword >= 8.toString()
-    var confirmPassword by remember {
-        mutableStateOf("")
-    }
-    confirmPassword == newPassword
+fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthViewModel = hiltViewModel()) {
 
-    val isPasswordValid by derivedStateOf {
-        newPassword == confirmPassword
-    }
-    val isFormValid by derivedStateOf {
-        userName.isNotBlank() && email.isNotBlank() && location.isNotBlank() && phoneNumber.isNotBlank() && newPassword.isNotBlank() && confirmPassword.isNotBlank() && isPasswordValid
-    }
+    val state = authViewModel.state
+    val context = LocalContext.current
+
+
     var isPasswordVisible by remember {
         mutableStateOf(false)
     }
-    val context = LocalContext.current
+
+    LaunchedEffect(authViewModel,context ){
+        authViewModel.authResults.collect{ result ->
+            when(result){
+                is AuthResult.Authorized -> {
+                    Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
+                    navigator.navigate(ListScreenDestination){
+                        popUpTo(ListScreenDestination){
+                            inclusive = true
+                        }
+                    }
+                }
+
+                is AuthResult.UnAuthorized -> {
+                    Toast.makeText(context, "Unauthorized", Toast.LENGTH_SHORT).show()
+                }
+
+                is AuthResult.UnknownError -> {
+                    Toast.makeText(context, "Unknown Error", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
+    }
+
 
     LazyColumn {
         item {
-            LogoImage()
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+                LogoImage()
+            }
+
         }
         item {
             Card(
@@ -116,20 +119,11 @@ fun SignInScreenContent(navigator: DestinationsNavigator) {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         OutlinedTextField(
-                            value = userName,
+                            value = state.isUserNameChangedSignIn,
                             onValueChange = {
-                                userName = it
+                                authViewModel.onEvents(AuthUiEvent.IsUserNameSignInChanged(it))
                             },
                             singleLine = true,
-                            trailingIcon = {
-                                if (userName.isNotBlank()) {
-                                    IconButton(onClick = { userName = "" }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Clear,
-                                            contentDescription = "Clear")
-                                    }
-                                }
-                            },
                             label = {
                                 Text(text = "UserName")
                             },
@@ -137,20 +131,11 @@ fun SignInScreenContent(navigator: DestinationsNavigator) {
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
-                            value = phoneNumber,
+                            value = state.isPhoneNumberChangedSignIn,
                             onValueChange = {
-                                phoneNumber = it
+                                authViewModel.onEvents(AuthUiEvent.IsPhoneNumberSignInChanged(it))
                             },
                             singleLine = true,
-                            trailingIcon = {
-                                if (phoneNumber.isNotBlank()) {
-                                    IconButton(onClick = { phoneNumber = "" }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Clear,
-                                            contentDescription = "Clear")
-                                    }
-                                }
-                            },
                             label = {
                                 Text(text = "Phone Number")
                             },
@@ -161,20 +146,11 @@ fun SignInScreenContent(navigator: DestinationsNavigator) {
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
-                            value = email,
+                            value = state.isEmailChangedSignIn,
                             onValueChange = {
-                                email = it
+                                authViewModel.onEvents(AuthUiEvent.IsEmailSignInChanged(it))
                             },
                             singleLine = true,
-                            trailingIcon = {
-                                if (email.isNotBlank()) {
-                                    IconButton(onClick = { email = "" }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Clear,
-                                            contentDescription = "Clear")
-                                    }
-                                }
-                            },
                             label = {
                                 Text(text = "Email")
                             },
@@ -182,20 +158,11 @@ fun SignInScreenContent(navigator: DestinationsNavigator) {
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
-                            value = location,
+                            value = state.isLocationChangedSignIn,
                             onValueChange = {
-                                location = it
+                                authViewModel.onEvents(AuthUiEvent.IsLocationSignInChanged(it))
                             },
                             singleLine = true,
-                            trailingIcon = {
-                                if (location.isNotBlank()) {
-                                    IconButton(onClick = { location = "" }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Clear,
-                                            contentDescription = "Clear")
-                                    }
-                                }
-                            },
                             label = {
                                 Text(text = "Location")
                             },
@@ -204,13 +171,13 @@ fun SignInScreenContent(navigator: DestinationsNavigator) {
 
                         Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
-                            value = newPassword,
+                            value = state.isPasswordChangedSignIn,
                             onValueChange = {
-                                newPassword = it
+                               authViewModel.onEvents(AuthUiEvent.IsPasswordSignInChanged(it))
                             },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
-                            label = { Text(text = "New Password") },
+                            label = { Text(text = " Password") },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Password,
                                 imeAction = ImeAction.Done),
@@ -239,64 +206,19 @@ fun SignInScreenContent(navigator: DestinationsNavigator) {
                             Text(
                                 text = "Password should be at least 8 characters",
                                 style = MaterialTheme.typography.caption,
-                                textAlign = TextAlign.Start
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.fillMaxWidth()
                             )
                         }
 
                         Spacer(modifier = Modifier.height(2.dp))
-                        OutlinedTextField(
-                            value = confirmPassword,
-                            onValueChange = {
-                                confirmPassword = it
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            label = { Text(text = "Confirm Password") },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Password,
-                                imeAction = ImeAction.Done),
-                            visualTransformation = if (isPasswordVisible)
-                                VisualTransformation.None
-                            else
-                                PasswordVisualTransformation(),
-                            trailingIcon = {
-                                val image = if (isPasswordVisible)
-                                    Icons.Filled.Visibility
-                                else Icons.Filled.VisibilityOff
-                                val description =
-                                    if (isPasswordVisible) "Hide password" else "Show password"
 
-                                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                                    Icon(
-                                        imageVector = image,
-                                        contentDescription = description
-                                    )
-
-                                }
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Box(contentAlignment = Alignment.TopStart) {
-                            Text(
-                                text = "Password should be at least 8 characters",
-                                style = MaterialTheme.typography.caption,
-                                textAlign = TextAlign.Start
-                            )
-                        }
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
                             onClick = {
-                                register(
-                                    context,
-                                    RegisterRequest(location,
-                                        email,
-                                        phoneNumber,
-                                        userName,
-                                        confirmPassword),
-                                    navigator,
-                                )
+                                      authViewModel.onEvents(AuthUiEvent.SignIn)
+
                             },
-                            enabled = isFormValid,
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(text = "Sign in")
@@ -315,57 +237,14 @@ fun SignInScreenContent(navigator: DestinationsNavigator) {
             }
         }
 }
-}
 
-fun register(
-    context: Context,
-    registerRequest: RegisterRequest,
-    navigator: DestinationsNavigator,
-
-    ) {
-    val apiService = ApiService.getInstance()
-    val sessionManager = SessionManager(context)
-
-    Toast.makeText(context, "Signing in...", Toast.LENGTH_SHORT).show()
-
-    apiService.register(registerRequest).enqueue(object : Callback<TokenResponse> {
-        override fun onResponse(
-            call: Call<TokenResponse>,
-            response: Response<TokenResponse>
+    if (state.isLoading){
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
         ) {
-            if (response.code() == 200 && response.body() != null) {
-                //Successful Registration
-                Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
-                val userData = response.body()
-                sessionManager.saveAuthToken(userData!!.token)
-                navigator.navigate(ListScreenDestination)
-            } else if (response.code() == 401) {
-                Log.d("TEST::", "onResponse: " + response.message())
-                //Already existing credentials
-                Toast.makeText(context, "Existing Credentials", Toast.LENGTH_SHORT).show()
-            } else if (response.code() == 403) {
-                Toast.makeText(context, "Forbidden", Toast.LENGTH_SHORT).show()
-            } else
-            //Something went wrong
-                Log.d("TEST::", "onResponse: " + response.message())
-            Toast.makeText(context, "Something went Wrong", Toast.LENGTH_SHORT).show()
-
+            CircularProgressIndicator()
         }
-
-        override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
-            Log.d("TEST::", "onResponse: " + t.message)
-            Toast.makeText(context, "Check your Internet Connection", Toast.LENGTH_SHORT)
-                .show()
-        }
-    })
+    }
 }
-
-
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun SignInScreenPreview(){
-//    val navController = rememberNavController()
-//    SignInScreen(navController)
-//}

@@ -7,10 +7,16 @@ import javax.inject.Singleton
 class CarRepository(
     private val apiService: ApiService
 ) {
-
-    suspend fun getCarInfo(){
-
-    }
+//    spend fun getCarInfo() : Resource<>{
+//        val response = try {
+//            apiService.getCarList()
+//        }
+//        catch (e: Exception){
+//
+//        }
+//
+//    }
+//    su
 
 
 

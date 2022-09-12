@@ -14,9 +14,7 @@ import com.joel.car_compose.model.fav.FavouriteResponseItem
 import kotlinx.coroutines.launch
 
 
-class CarSharedViewModel(
-context: Context
-): ViewModel() {
+class CarHomeViewModel() : ViewModel() {
 
 
     var carListResponse: List<CarItem> by mutableStateOf(listOf())
@@ -24,6 +22,10 @@ context: Context
     var favouriteListResponse : List<FavouriteResponseItem> by mutableStateOf(listOf())
     private var errorMessage: String by mutableStateOf("An Unknown Error Occurred")
 
+    init {
+        getBrandData()
+        getCarData()
+    }
 
             fun getCarData() {
                 viewModelScope.launch {
@@ -83,7 +85,6 @@ context: Context
             }
         }
     }
-
 }
 
 
