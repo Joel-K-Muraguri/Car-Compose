@@ -1,14 +1,14 @@
-package com.joel.car_compose.model.auth
+package com.joel.authentication_compose.auth
 
 data class AuthState(
-    val isUserNameChangedLogIn : String = "",
-    val isPasswordChangedLogIn : String = "",
+    val isUserNameChangedLogIn: String = "",
+    val isPasswordChangedLogIn: String = "",
 
-    val isUserNameChangedSignIn : String = "",
-    val isPhoneNumberChangedSignIn : String = "",
-    val isEmailChangedSignIn : String = "",
-    val isLocationChangedSignIn : String = "",
-    val isPasswordChangedSignIn : String = "",
+    val isUserNameChangedSignIn: String = "",
+    val isEmailChangedSignIn: String = "",
+    val isPhoneNumberChangedSignIn: String = "",
+    val isLocationChangedSignIn: String = "",
+    val isPasswordChangedSignIn: String = "",
     val isLoading : Boolean = false
 
 )

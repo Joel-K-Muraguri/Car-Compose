@@ -12,15 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.joel.car_compose.R
 import com.joel.car_compose.components.BrandCardItem
 import com.joel.car_compose.components.CarCardItem
-import com.joel.car_compose.model.data.Brand
+import com.joel.car_compose.model.data.BrandItem
 import com.joel.car_compose.model.data.CarItem
 import com.joel.car_compose.ui.destinations.ProfileScreenDestination
+import com.joel.car_compose.viewmodel.CarHomeViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -29,7 +29,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun ListScreen(
     navigator: DestinationsNavigator,
     ){
-    val context = LocalContext.current
 
     val carHomeViewModel = CarHomeViewModel()
     ListScreenTools(navigator , carHomeViewModel )
@@ -100,7 +99,7 @@ fun CarList(
 
 @Composable
 fun BrandList(
-    brandList : List<Brand>,
+    brandList: List<BrandItem>,
 ){
     LazyRow(
         modifier = Modifier

@@ -12,19 +12,16 @@ class SessionManager(
 
     //In this class we are going to save the authentication token and fetch the token
 
+
     fun saveAuthToken(token: String){
         val editor = prefs.edit()
         editor.putString(ApiConstants.USER_TOKEN, token)
         editor.apply()
     }
 
+    //we are using the fetch token to display user token on the screen
     fun fetchAuthToken() : String? {
         return prefs.getString(ApiConstants.USER_TOKEN, "")
 
     }
-
-    fun checkUserStatusCode(){
-
-    }
-
 }

@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.joel.car_compose.model.auth.AuthRepo
-import com.joel.car_compose.model.auth.AuthRepoImplemention
+import com.joel.car_compose.model.auth.AuthRepoImplementation
 import com.joel.car_compose.model.network.ApiService
 import com.joel.car_compose.utils.ApiConstants
 import dagger.Module
@@ -40,6 +40,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(apiService: ApiService, prefs: SharedPreferences): AuthRepo {
-        return AuthRepoImplemention(apiService, prefs)
+        return AuthRepoImplementation(apiService, prefs)
     }
 }

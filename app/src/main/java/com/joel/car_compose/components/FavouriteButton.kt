@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.joel.car_compose.model.network.ApiService
 import com.joel.car_compose.model.auth.SessionManager
-import com.joel.car_compose.model.fav.FavouriteCarItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,33 +80,33 @@ fun FavouriteButton(
     }
 }
 
- fun toggleFavourite(context: Context, carId: Int){
-    val apiService = ApiService.getInstance()
-    val sessionManager = SessionManager(context)
-     Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
-    apiService.toggleFavoriteCar("Token ${sessionManager.fetchAuthToken()}", carId)
-        .enqueue(object: Callback<FavouriteCarItem>{
-        override fun onResponse(
-            call: Call<FavouriteCarItem>,
-            response: Response<FavouriteCarItem>,
-        ) {
-            if (response.code() == 200){
-                Toast.makeText(context,response.body()!!.message, Toast.LENGTH_SHORT).show()
-            }
-            else if (response.code() == 401){
-                Toast.makeText(context,"Unauthorized", Toast.LENGTH_SHORT).show()
-
-            }
-            else
-                Toast.makeText(context,"Something Went Wrong", Toast.LENGTH_SHORT).show()
-
-        }
-
-        override fun onFailure(call: Call<FavouriteCarItem>, t: Throwable) {
-            Toast.makeText(context, "Check your Internet Connection", Toast.LENGTH_SHORT).show()
-            TODO("Not yet implemented")
-        }
-
-    })
-
-}
+// fun toggleFavourite(context: Context, carId: Int){
+//    val apiService = ApiService.getInstance()
+//    val sessionManager = SessionManager(context)
+//     Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
+//    apiService.toggleFavoriteCar("Token ${sessionManager.fetchAuthToken()}", carId)
+//        .enqueue(object: Callback<FavouriteCarItem>{
+//        override fun onResponse(
+//            call: Call<FavouriteCarItem>,
+//            response: Response<FavouriteCarItem>,
+//        ) {
+//            if (response.code() == 200){
+//                Toast.makeText(context,response.body()!!.message, Toast.LENGTH_SHORT).show()
+//            }
+//            else if (response.code() == 401){
+//                Toast.makeText(context,"Unauthorized", Toast.LENGTH_SHORT).show()
+//
+//            }
+//            else
+//                Toast.makeText(context,"Something Went Wrong", Toast.LENGTH_SHORT).show()
+//
+//        }
+//
+//        override fun onFailure(call: Call<FavouriteCarItem>, t: Throwable) {
+//            Toast.makeText(context, "Check your Internet Connection", Toast.LENGTH_SHORT).show()
+//            TODO("Not yet implemented")
+//        }
+//
+//    })
+//
+//}

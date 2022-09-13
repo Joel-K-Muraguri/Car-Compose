@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.joel.car_compose.R
-import com.joel.car_compose.ui.destinations.FavouriteScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -136,7 +135,7 @@ fun MyWishListButton(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                      navigator.navigate(FavouriteScreenDestination)
+//                      navigator.navigate(FavouriteScreenDestination)
             },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
@@ -240,10 +239,3 @@ fun LogOutButton(){
 
     }
 }
-/*
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview(){
-    ProfileScreen()
-}
-*/

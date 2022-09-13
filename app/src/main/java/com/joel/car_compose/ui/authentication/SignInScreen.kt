@@ -3,7 +3,6 @@ package com.joel.car_compose.ui.authentication
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -15,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -24,12 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.joel.car_compose.components.LogoImage
-import com.joel.car_compose.model.auth.AuthResult
-import com.joel.car_compose.model.auth.AuthUiEvent
-import com.joel.car_compose.model.auth.AuthViewModel
+import com.joel.authentication_compose.auth.AuthResult
+import com.joel.authentication_compose.auth.AuthUiEvent
 import com.joel.car_compose.ui.destinations.ListScreenDestination
 import com.joel.car_compose.ui.destinations.LogInScreenDestination
+import com.joel.car_compose.viewmodel.AuthViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.popUpTo
@@ -37,67 +35,60 @@ import com.ramcosta.composedestinations.navigation.popUpTo
 @Destination
 @Composable
 fun SignInScreen(
-    navigator: DestinationsNavigator,
-
-
+    authViewModel: AuthViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator
 ){
-    Scaffold(
-        backgroundColor = Color.Blue,
-        content = {
-            SignInScreenContent(navigator)
-        }
-    )
-}
 
-@Composable
-fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthViewModel = hiltViewModel()) {
-
-    val state = authViewModel.state
     val context = LocalContext.current
+    val state = authViewModel.state
 
 
     var isPasswordVisible by remember {
         mutableStateOf(false)
     }
 
-    LaunchedEffect(authViewModel,context ){
-        authViewModel.authResults.collect{ result ->
-            when(result){
-                is AuthResult.Authorized -> {
-                    Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
-                    navigator.navigate(ListScreenDestination){
-                        popUpTo(ListScreenDestination){
-                            inclusive = true
-                        }
-                    }
-                }
 
-                is AuthResult.UnAuthorized -> {
-                    Toast.makeText(context, "Unauthorized", Toast.LENGTH_SHORT).show()
-                }
+    LaunchedEffect(authViewModel,context){
+       authViewModel.authResults.collect{ result ->
+           when(result){
+               is AuthResult.Authorized -> {
+                   Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
+                   navigator.navigate(ListScreenDestination){
+                       popUpTo(ListScreenDestination)
+                   }
+               }
+               is AuthResult.Unauthorized -> {
+                   Toast.makeText(context, "You are not Authorized", Toast.LENGTH_SHORT).show()
 
-                is AuthResult.UnknownError -> {
-                    Toast.makeText(context, "Unknown Error", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-        }
+               }
+               is AuthResult.UnknownError -> {
+                   Toast.makeText(context, "Check your Internet Connection", Toast.LENGTH_SHORT).show()
+               }
+           }
+       }
     }
 
+    Column(
+        modifier = Modifier
+            .background(Color.Blue)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
 
-    LazyColumn {
-        item {
-            Box(
-                contentAlignment = Alignment.Center,
-            ) {
-                LogoImage()
-            }
+    ) {
 
-        }
-        item {
+
+                Text(
+                    text = "JOIN",
+                    style = MaterialTheme.typography.h4,
+                    fontFamily = FontFamily.SansSerif,
+                    modifier = Modifier.weight(1f)
+
+                    )
             Card(
                 modifier = Modifier
-                    .padding(10.dp),
+                    .padding(10.dp)
+                    .weight(3f),
                 shape = RoundedCornerShape(32.dp)
 
             ) {
@@ -108,7 +99,7 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                         .fillMaxSize(),
                 ) {
                     Text(
-                        text = "Welcome To Auto Cars",
+                        text = "Welcome To My Auth App",
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -121,9 +112,10 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                         OutlinedTextField(
                             value = state.isUserNameChangedSignIn,
                             onValueChange = {
-                                authViewModel.onEvents(AuthUiEvent.IsUserNameSignInChanged(it))
+                                authViewModel.onEvents(AuthUiEvent.IsUserNameChangedSignIn(it))
                             },
                             singleLine = true,
+
                             label = {
                                 Text(text = "UserName")
                             },
@@ -133,7 +125,7 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                         OutlinedTextField(
                             value = state.isPhoneNumberChangedSignIn,
                             onValueChange = {
-                                authViewModel.onEvents(AuthUiEvent.IsPhoneNumberSignInChanged(it))
+                                authViewModel.onEvents(AuthUiEvent.IsPhoneNumberChangedSignIn(it))
                             },
                             singleLine = true,
                             label = {
@@ -148,9 +140,10 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                         OutlinedTextField(
                             value = state.isEmailChangedSignIn,
                             onValueChange = {
-                                authViewModel.onEvents(AuthUiEvent.IsEmailSignInChanged(it))
+                               authViewModel.onEvents(AuthUiEvent.IsEmailChangedSignIn(it))
                             },
                             singleLine = true,
+
                             label = {
                                 Text(text = "Email")
                             },
@@ -160,7 +153,7 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                         OutlinedTextField(
                             value = state.isLocationChangedSignIn,
                             onValueChange = {
-                                authViewModel.onEvents(AuthUiEvent.IsLocationSignInChanged(it))
+                               authViewModel.onEvents(AuthUiEvent.IsLocationChangedSignIn(it))
                             },
                             singleLine = true,
                             label = {
@@ -168,20 +161,13 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                             },
                             modifier = Modifier.fillMaxWidth(),
                         )
-
-                        Spacer(modifier = Modifier.height(2.dp))
                         OutlinedTextField(
                             value = state.isPasswordChangedSignIn,
                             onValueChange = {
-                               authViewModel.onEvents(AuthUiEvent.IsPasswordSignInChanged(it))
+                               authViewModel.onEvents(AuthUiEvent.IsPasswordChangedSignIn(it))
                             },
-                            modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
-                            label = { Text(text = " Password") },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Password,
-                                imeAction = ImeAction.Done),
-                            visualTransformation = if (isPasswordVisible)
+                            visualTransformation = if(isPasswordVisible)
                                 VisualTransformation.None
                             else
                                 PasswordVisualTransformation(),
@@ -189,18 +175,20 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                                 val image = if (isPasswordVisible)
                                     Icons.Filled.Visibility
                                 else Icons.Filled.VisibilityOff
-                                val description =
-                                    if (isPasswordVisible) "Hide password" else "Show password"
-
-                                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                                val description = if (isPasswordVisible) "Hide password" else "Show password"
+                                IconButton(onClick = { isPasswordVisible =! isPasswordVisible }) {
                                     Icon(
                                         imageVector = image,
                                         contentDescription = description
                                     )
-
                                 }
-                            }
+                                           },
+                                label = {
+                                Text(text = "Password")
+                            },
+                            modifier = Modifier.fillMaxWidth(),
                         )
+
                         Spacer(modifier = Modifier.height(4.dp))
                         Box(contentAlignment = Alignment.TopStart) {
                             Text(
@@ -210,14 +198,10 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
-
-                        Spacer(modifier = Modifier.height(2.dp))
-
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
                             onClick = {
-                                      authViewModel.onEvents(AuthUiEvent.SignIn)
-
+                                authViewModel.onEvents(AuthUiEvent.SignIn)
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
@@ -229,22 +213,23 @@ fun SignInScreenContent(navigator: DestinationsNavigator, authViewModel: AuthVie
                                 text = "Already have an Account?",
                                 color = Color.Blue
                             )
-
                         }
                     }
-                }
 
             }
         }
-}
+    }
 
-    if (state.isLoading){
-        Box(
-            modifier = Modifier
+        if (state.isLoading){
+            Box(modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White)
-        ) {
-            CircularProgressIndicator()
-        }
+                .background(Color.White),
+                contentAlignment = Alignment.Center
+            )
+            {
+                CircularProgressIndicator()
+            }
     }
 }
+
+

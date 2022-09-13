@@ -1,6 +1,5 @@
 package com.joel.car_compose.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,13 +16,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
-import coil.compose.rememberAsyncImagePainter
-import com.joel.car_compose.model.data.Brand
+import com.joel.car_compose.model.data.BrandItem
 
 
 @Composable
 fun BrandCardItem(
-    brand: Brand,
+    brand: BrandItem,
 
     ){
 
@@ -61,7 +59,6 @@ fun BrandCardItem(
                     SubcomposeAsyncImageContent()
                 }
             }
-
         }
         Text(
             text = brand.name,
@@ -69,6 +66,4 @@ fun BrandCardItem(
             .padding(8.dp)
             )
     }
-
-
 }

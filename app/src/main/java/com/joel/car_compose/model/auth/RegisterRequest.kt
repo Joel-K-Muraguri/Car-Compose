@@ -1,11 +1,9 @@
 package com.joel.car_compose.model.auth
 
-// number, password, email, name, location
 data class RegisterRequest(
-    var location: String,
-    var email: String,
-    var number: String,
-    var name: String,
-    var password: String
-
+    val location: String,
+    val email: String,
+    val number: String,
+    val name: String,
+    val password : String,
 )
