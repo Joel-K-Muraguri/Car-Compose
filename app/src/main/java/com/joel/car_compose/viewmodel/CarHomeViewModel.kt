@@ -1,5 +1,6 @@
 package com.joel.car_compose.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,7 +12,7 @@ import com.joel.car_compose.model.network.ApiService
 import kotlinx.coroutines.launch
 
 
-class CarHomeViewModel() : ViewModel() {
+class CarHomeViewModel : ViewModel() {
 
 
     var carListResponse: List<CarItem> by mutableStateOf(listOf())
@@ -24,22 +25,22 @@ class CarHomeViewModel() : ViewModel() {
         getCarData()
     }
 
-            fun getCarData() {
+    fun getCarData() {
                 viewModelScope.launch {
                     val apiService = ApiService.getInstance()
                     try {
                         val carList = apiService.getCarList()
                         carListResponse = carList
-//                        Log.d("TEST::", "getCarData: " + carList.size)
+                        Log.d("TEST::", "getCarData: " + carList.size)
                     } catch (e: Exception) {
                         errorMessage = e.message.toString()
-//                        Log.d("TEST::", "getCarData: " + errorMessage)
+                        Log.d("TEST::", "getCarData: $errorMessage")
                     }
                 }
             }
 
 
-            fun getBrandData() {
+    fun getBrandData() {
                 viewModelScope.launch {
                   val apiService = ApiService.getInstance()
                     try {

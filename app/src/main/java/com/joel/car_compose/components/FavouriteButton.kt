@@ -28,8 +28,7 @@ import retrofit2.Response
 
 @Composable
 fun Favourite(
-    context: Context,
-    carId: Int
+
 ){
     Surface(
         modifier =  Modifier.

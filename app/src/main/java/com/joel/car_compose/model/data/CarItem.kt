@@ -1,5 +1,10 @@
 package com.joel.car_compose.model.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
 data class CarItem(
     val brand: Int,
     val color: String,
@@ -14,4 +19,4 @@ data class CarItem(
     val quantity: Int,
     val transmission: Int,
     val year_of_manufacture: Int
-)
+) : Parcelable

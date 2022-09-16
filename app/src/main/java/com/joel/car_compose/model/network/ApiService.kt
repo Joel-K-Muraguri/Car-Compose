@@ -65,6 +65,4 @@ interface ApiService {
         }
     }
 
-
-
 }

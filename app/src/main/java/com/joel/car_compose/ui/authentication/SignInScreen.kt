@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.joel.authentication_compose.auth.AuthResult
 import com.joel.authentication_compose.auth.AuthUiEvent
+import com.joel.car_compose.ui.destinations.AuthenticationScreenDestination
 import com.joel.car_compose.ui.destinations.ListScreenDestination
 import com.joel.car_compose.ui.destinations.LogInScreenDestination
 import com.joel.car_compose.viewmodel.AuthViewModel
@@ -54,7 +55,7 @@ fun SignInScreen(
                is AuthResult.Authorized -> {
                    Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
                    navigator.navigate(ListScreenDestination){
-                       popUpTo(ListScreenDestination)
+                       popUpTo(AuthenticationScreenDestination)
                    }
                }
                is AuthResult.Unauthorized -> {

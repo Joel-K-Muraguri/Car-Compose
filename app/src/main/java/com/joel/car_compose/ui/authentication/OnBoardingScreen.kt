@@ -117,14 +117,14 @@ fun PageContentSection(
                                    shape = RoundedCornerShape(20.dp))
                                .clip(RoundedCornerShape(50.dp))
                                .padding(5.dp)
-                               .size(35.dp)
+                               .size(30.dp)
                        )
 
-                       Spacer(modifier = Modifier.padding(5.dp))
+                       Spacer(modifier = Modifier.padding(2.dp))
 
                        Text(
                            text = "Get Started",
-                           color = White
+                           color = White,
                        )
                    }
                }
