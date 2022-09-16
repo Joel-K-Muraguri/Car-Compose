@@ -4,8 +4,8 @@
 # It is Under production. 
 
 #Stack Used
-*Compose Destinations
-*Hilt
-*Jetpack Compose
-*Retrofit
-*Nav args - Parcelize
+#Compose Destinations
+#Hilt
+#Jetpack Compose
+#Retrofit
+#Nav args - Parcelize
