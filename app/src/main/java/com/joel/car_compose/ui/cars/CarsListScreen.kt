@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.joel.car_compose.R
 import com.joel.car_compose.components.BrandCardItem
 import com.joel.car_compose.components.CarCardItem
@@ -34,9 +37,10 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun ListScreen(
     navigator: DestinationsNavigator,
+    carHomeViewModel: CarHomeViewModel = viewModel(),
+
     ){
 
-    val carHomeViewModel = CarHomeViewModel()
     ListScreenTools(navigator , carHomeViewModel )
 
 }
@@ -61,7 +65,9 @@ fun ListScreenTools(
                 carList = carHomeViewModel.carListResponse,
                 navigator,
             )
-            carHomeViewModel.getCarData()
+            LaunchedEffect(key1 = true) {
+                //carHomeViewModel.getCarData()
+            }
         }
     }
 }
@@ -106,12 +112,6 @@ fun CarList(
         verticalArrangement = Arrangement.spacedBy(25.dp),
     )
     {
-        item {
-
-
-
-
-        }
         items(
             items = carList,
             itemContent = {

@@ -26,6 +26,8 @@ class CarHomeViewModel : ViewModel() {
     }
 
     fun getCarData() {
+
+        Log.d("viewmodel", "getting data")
                 viewModelScope.launch {
                     val apiService = ApiService.getInstance()
                     try {
